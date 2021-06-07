@@ -10,8 +10,9 @@ class SpaceScene extends Scene {
     this.spaceship = new Spaceship();
     this.planet = new Planet();
     this.kirby = new Kirby();
-    this.addEntity(this.planet)
+    this.addEntity(this.planet);
     this.addEntity(this.kirby);
+    this.addEntity(this.spaceship);
   }
 
   draw() {

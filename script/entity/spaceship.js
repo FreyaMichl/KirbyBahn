@@ -7,8 +7,8 @@ class SpaceshipSprite extends SimpleSprite {
   createBody() {
     let body = Bodies.rectangle(
       0,
-      0,
-      200,
+      windowHeight / 2,
+      2000,
       40, {
         mass: 100,
         isStatic: true,
