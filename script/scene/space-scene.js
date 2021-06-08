@@ -19,7 +19,7 @@ class SpaceScene extends Scene {
     this.background = loadImage("assets/textures/background.png",
       result => {
         console.log(this.background.width);
-        this.background.resize(this.background.width * 4, this.background.height * 4);
+        this.background.resize(this.background.width, this.background.height);
       });
   }
   draw() {
