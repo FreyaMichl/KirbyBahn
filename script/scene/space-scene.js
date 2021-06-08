@@ -15,7 +15,15 @@ class SpaceScene extends Scene {
     this.addEntity(this.spaceship);
   }
 
+  preload() {
+    this.background = loadImage("assets/textures/background.png",
+      result => {
+        console.log(this.background.width);
+        this.background.resize(this.background.width * 4, this.background.height * 4);
+      });
+  }
   draw() {
+    image(this.background, -windowWidth / 2, -windowHeight / 2);
     super.draw()
     this.entities.forEach(entity => {
       entity.draw()

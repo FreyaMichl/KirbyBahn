@@ -17,6 +17,8 @@ export default class Scene {
     });
   }
 
+  preload() {}
+
   open() {
     if (this.shown) {
       return;

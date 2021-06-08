@@ -28,6 +28,13 @@ class Environment {
     environment.scene.afterTick();
   }
 
+  preload() {
+    if (!environment.scene) {
+      return;
+    }
+    environment.scene.preload();
+  }
+
   openScene(scene) {
     if (this.scene) {
       this.scene.close();
@@ -41,6 +48,11 @@ globalThis.environment = new Environment()
 export default globalThis.environment
 
 //Bootstrap p5js global functions
+
+globalThis.preload = () => {
+  environment.preload();
+};
+
 globalThis.draw = () => {
   environment.draw();
 };

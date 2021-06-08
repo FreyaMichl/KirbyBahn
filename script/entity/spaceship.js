@@ -40,7 +40,9 @@ class SpaceshipSprite extends SimpleSprite {
   draw() {
     fill('black')
     super.draw();
+
   }
+  preload() {}
 }
 
 export default class Spaceship extends Entity {
