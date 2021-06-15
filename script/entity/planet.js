@@ -4,16 +4,23 @@ import {
 } from "../sprite.js";
 
 class PlanetSprite extends SimpleSprite {
+  constructor(texture, x, y, size) {
+    super(texture)
+    this.x = x
+    this.y = y
+    this.size = size
+  }
   createBody() {
     let body = Bodies.circle(
-      0,
-      100,
-      200, {
+      this.x,
+      this.y,
+      this.size, {
         mass: 100,
         isStatic: true,
         mass: 20,
         restitution: 0.7,
-      });
+      },
+      64);
     body.plugin.attractors = [
       function(bodyA, bodyB) {
         if (bodyB.isParticle != true) {
@@ -37,15 +44,22 @@ class PlanetSprite extends SimpleSprite {
     return body;
   }
   draw() {
-    fill('black')
     super.draw();
   }
 }
 
 export default class Planet extends Entity {
 
+  constructor(texture, x, y, size) {
+    super();
+    this.texture = texture;
+    this.x = x;
+    this.y = y;
+    this.size = size;
+  }
+
   createSprite() {
-    return new PlanetSprite();
+    return new PlanetSprite(this.texture, this.x, this.y, this.size);
   }
 
 
@@ -53,18 +67,3 @@ export default class Planet extends Entity {
 
   }
 }
-// let planets = [Bodies.circle(
-//     windowWidth / 2,
-//     100,
-//     50, {
-//       mass: 2,
-//       restitution: 0.7,
-//     }),
-//   Bodies.circle(
-//     windowWidth / 2,
-//     500,
-//     50, {
-//       mass: 2,
-//       restitution: 0.7,
-//     })
-// ];

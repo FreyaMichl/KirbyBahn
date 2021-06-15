@@ -3,6 +3,7 @@ class Environment {
   engine;
 
   draw() {
+    translate(-this.canvas.width / 2, -this.canvas.height / 2);
     clear()
     if (!this.scene) {
       return;
@@ -14,7 +15,7 @@ class Environment {
     Matter.use('matter-wrap');
     Matter.use('matter-attractors');
 
-    this.canvas = createCanvas(windowWidth, windowHeight, WEBGL);
+    this.canvas = createCanvas(windowWidth, windowHeight * 6, WEBGL);
     this.engine = Engine.create();
     this.engine.world.gravity.scale = 0.00004
     Engine.run(this.engine);
@@ -33,6 +34,14 @@ class Environment {
       return;
     }
     environment.scene.preload();
+  }
+
+  scrollToPage(page) {
+    let element = $("body");
+    if (element.is(':animated')) return;
+    element.animate({
+      scrollTop: windowHeight * page
+    }, 800);
   }
 
   openScene(scene) {

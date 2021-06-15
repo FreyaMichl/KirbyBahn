@@ -23,12 +23,12 @@ export default class Sprite {
     })
     body.plugin.wrap = {
       min: {
-        x: -windowWidth / 2,
-        y: -windowHeight / 2
+        x: 0,
+        y: 0
       },
       max: {
-        x: windowWidth / 2,
-        y: windowHeight / 2
+        x: environment.canvas.width,
+        y: environment.canvas.height
       }
     }
     return body;
@@ -104,7 +104,6 @@ export default class Sprite {
 
   ensureBodyAvailable() {
     if (!this.body) {
-      console.log(this);
       this.body = this.createBody(this.currentFrame);
       World.add(environment.engine.world, this.body);
 
@@ -130,6 +129,12 @@ export default class Sprite {
 }
 
 export class SimpleSprite {
+  constructor(texture) {
+    if (!texture) return;
+    loadImage(texture, finalTexture => {
+      this.texture = finalTexture;
+    })
+  }
 
   draw() {
     this.ensureSimpleBodyAvailable();
@@ -150,10 +155,27 @@ export class SimpleSprite {
 
   drawVertices() {
     beginShape();
+    if (!this.texture) {
+      this.body.vertices.forEach(bodyVertex => {
+        vertex(bodyVertex.x, bodyVertex.y);
+      });
+    } else {
+      texture(this.texture);
+      textureMode(NORMAL)
 
-    this.body.vertices.forEach(bodyVertex => {
-      vertex(bodyVertex.x, bodyVertex.y);
-    });
+      let max = this.body.bounds.max;
+      let min = this.body.bounds.min;
+
+      let bodyWidth = max.x - min.x;
+      let bodyHeight = max.y - min.y;
+
+      this.body.vertices.forEach(bodyVertex => {
+        let u = (bodyVertex.x - min.x) / bodyWidth
+        let v = (bodyVertex.y - min.y) / bodyHeight
+        vertex(bodyVertex.x, bodyVertex.y, u, v);
+      });
+    }
+
     endShape(CLOSE);
   }
 
