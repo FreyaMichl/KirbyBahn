@@ -11,6 +11,10 @@ const Engine = Matter.Engine,
   Mouse = Matter.Mouse,
   Common = Matter.Common,
   Bodies = Matter.Bodies;
+  MouseConstraint = Matter.MouseConstraint;
+  Constraint = Matter.Constraint;
+  Composites = Matter.Composites;
+  Composite = Matter.Composite;
 
 const drawVertices = Helpers.drawVertices;
 
@@ -19,12 +23,13 @@ let engine;
 let player;
 let jumping;
 let planet;
+let bridge;
 
 function setup() {
   canvas = createCanvas(windowWidth, windowHeight);
   engine = Engine.create();
 
-  engine.world.gravity.scale = 0.0
+  // engine.world.gravity.scale = 0.0
   Matter.Resolver._restingThresh = 0.002
   MatterAttractors.Attractors.gravityConstant = 0.003
 
@@ -75,9 +80,9 @@ function setup() {
 
   let planets = [Bodies.circle(
       windowWidth / 2,
-      100,
-      50, {
-        mass: 2,
+      400,
+      200, {
+        mass: 3,
         restitution: 0.7,
       }),
     Bodies.circle(
@@ -94,6 +99,38 @@ function setup() {
   for (var i = 0; i < planets.length; i++) {
     World.add(engine.world, planets[i])
   }
+
+  //add bridge
+  const group = Body.nextGroup(true);
+  //both x, both y, columns, rows, columnGap, rowGap, callback funktion
+  const rects = Composites.stack(200, 100, 10, 1, 10, 10, function(x, y){
+    // x (is filled at composite.add), y (""), length, width,
+    return Bodies.rectangle(x, y, 100, 50 /*,{ collisionFilter:{ group : group }}*/);
+  });
+  //chains, xOffsetA, yOffsetA, xOffsetB, yOffsetB, options(stiffness - hoch steif)
+  bridge = Composites.chain(rects, 0.5, 0, -0.5, 0, {stiffness: 0.08, length: 2, render: {type: 'line'}});
+  World.add(engine.world, [bridge]);
+
+  // left and right fix point of bridge
+  //left point of bridge
+  Composite.add(rects, Constraint.create({
+    pointA: {x: 300, y: 300},
+    bodyB: rects.bodies[0],
+    //constrain im rect
+    pointB: {x: -50, y: 0},
+    stiffness: 0,
+    length: 100
+  }));
+  //right point of bridge
+  Composite.add(rects, Constraint.create({
+    pointA: {x: 1000, y: 300},
+    bodyB: rects.bodies[rects.bodies.length-1],
+    //constrain im rect
+    pointB: {x: +50, y: 0},
+    stiffness: 0,
+    length: 200
+  }));
+
   // run the engine
   Engine.run(engine);
   Events.on(engine, "afterTick", function() {
@@ -102,7 +139,9 @@ function setup() {
 
       engine.world.bodies.forEach((body, i) => {
         if (body === player) return;
+
         if (Matter.SAT.collides(player, body).collided) {
+          console.log(body)
           var vw = windowWidth / 100;
           var vh = windowHeight / 100;
           // use Newton's law of gravitation
@@ -146,5 +185,42 @@ function draw() {
   engine.world.bodies.forEach((body, i) => {
     drawVertices(body.vertices);
   });
+  drawBodies(bridge.bodies);
+  stroke(255);
+  fill(255);
 
+  stroke(128);
+  strokeWeight(2);
+  drawConstraints(bridge.constraints);
+}
+
+function drawConstraints(constraints) {
+  for (let i = 0; i < constraints.length; i++) {
+    drawConstraint(constraints[i]);
+  }
+}
+
+function drawBodies(bodies) {
+  for (let i = 0; i < bodies.length; i++) {
+    drawVertices(bodies[i].vertices);
+  }
+}
+
+function drawConstraint(constraint) {
+  const offsetA = constraint.pointA;
+  let posA = {x:0, y:0};
+  if (constraint.bodyA) {
+    posA = constraint.bodyA.position;
+  }
+  const offsetB = constraint.pointB;
+  let posB = {x:0, y:0};
+  if (constraint.bodyB) {
+    posB = constraint.bodyB.position;
+  }
+  line(
+    posA.x + offsetA.x,
+    posA.y + offsetA.y,
+    posB.x + offsetB.x,
+    posB.y + offsetB.y
+  );
 }
