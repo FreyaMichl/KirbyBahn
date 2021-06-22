@@ -15,7 +15,6 @@ class PlanetSprite extends SimpleSprite {
       this.x,
       this.y,
       this.size, {
-        mass: 100,
         isStatic: true,
         mass: 20,
         restitution: 0.7,

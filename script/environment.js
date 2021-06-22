@@ -17,7 +17,7 @@ class Environment {
 
     this.canvas = createCanvas(windowWidth, windowHeight * 6, WEBGL);
     this.engine = Engine.create();
-    this.engine.world.gravity.scale = 0.00004
+    this.engine.world.gravity.scale = 0.0000//4
     Engine.run(this.engine);
     Events.on(this.engine, "afterTick", this.afterTick)
   }

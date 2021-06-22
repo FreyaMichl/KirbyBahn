@@ -8,19 +8,14 @@ export default class Sprite {
     this.currentAnimation = name
   }
 
-  createBody(frame) {
+  createBody(animation) {
     let body = Body.create(Common.extend({
       position: {
-        x: 0,
-        y: 0
+        x: 600,
+        y: 200
       },
-      vertices: frame.vertices
+      vertices: this.animations[animation].vertices
     }));
-    body.vertices.forEach((vertex, index) => {
-      let source = frame.vertices[index];
-      vertex.u = source.u;
-      vertex.v = source.v;
-    })
     body.plugin.wrap = {
       min: {
         x: 0,
@@ -46,13 +41,11 @@ export default class Sprite {
 
   ensureOnlyCurrentBodyIsShown() {
     if (!this.body) {
-      this.createBody(this.currentFrame);
+      this.createBody(this.currentAnimation);
     }
-    // this.body.vertices = this.verticesMap.get(this.currentFrame);
-    Body.setVertices(this.body, this.currentFrame.vertices);
 
     this.body.vertices.forEach((vertex, index) => {
-      let source = this.currentFrame.vertices[index];
+      let source = this.animations[this.currentAnimation].vertices[index];
       vertex.u = source.u;
       vertex.v = source.v;
     })
@@ -104,7 +97,7 @@ export default class Sprite {
 
   ensureBodyAvailable() {
     if (!this.body) {
-      this.body = this.createBody(this.currentFrame);
+      this.body = this.createBody(this.currentAnimation);
       World.add(environment.engine.world, this.body);
 
     }

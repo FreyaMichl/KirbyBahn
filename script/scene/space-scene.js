@@ -9,8 +9,8 @@ class SpaceScene extends Scene {
     super();
     // this.spaceship = new Spaceship();
     this.kirby = new Kirby();
-    this.addEntity(new Planet("assets/textures/planet.png", 1500, 600, 250));
-    this.addEntity(new Planet("assets/textures/erdePlanet.png", 300, 250, 200));
+    // this.addEntity(new Planet("assets/textures/planet.png", 1500, 600, 250));
+    this.addEntity(new Planet("assets/textures/erdePlanet.png", 400, 400, 200));
     this.addEntity(this.kirby);
     // this.addEntity(this.spaceship);
   }
