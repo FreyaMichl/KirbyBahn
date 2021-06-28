@@ -1,13 +1,112 @@
 import Entity from "../entity.js";
 import Sprite from "../sprite.js";
 import environment from "../environment.js";
+import {Input, MovementController} from "./movement.js";
+
+class KirbyMovementController extends MovementController {
+    constructor(kirby) {
+        super();
+        this.kirby = kirby;
+
+        this.lastDirection = Input.RIGHT;
+        let right = this.pressed(Input.RIGHT)
+        let left = this.pressed(Input.LEFT);
+        let down = this.pressed(Input.DOWN);
+        let up = this.pressed(Input.UP);
+
+        let rollRight = this.and(down, right);
+        let rollLeft = this.and(down, left);
+
+        let walkRight = this.and(this.not(rollRight), right)
+        let walkLeft = this.and(this.not(rollLeft), left)
+
+        let idle = this.and(
+            this.and(
+                this.not(walkRight),
+                this.not(walkLeft)
+            ),
+            this.and(
+                this.not(rollRight),
+                this.not(rollLeft)
+            ),
+            this.and(
+                this.not(down)
+            )
+        );
+
+        this.registerInputCombination(
+            right,
+            () => this.lastDirection = Input.RIGHT
+        )
+
+        this.registerInputCombination(
+            left,
+            () => this.lastDirection = Input.LEFT
+        )
+
+        this.registerInputCombination(
+            rollRight,
+            () => this.kirby.sprite.setAnimation("roll-entry-right")
+        )
+        this.registerInputCombination(
+            rollLeft,
+            () => this.kirby.sprite.setAnimation("roll-entry-left")
+        )
+
+        this.registerInputCombination(
+            walkRight,
+            () => this.kirby.sprite.setAnimation("run-right")
+        )
+
+        this.registerInputCombination(
+            walkLeft,
+            () => this.kirby.sprite.setAnimation("run-left")
+        )
+
+        this.registerInputCombination(
+            idle,
+            () => {
+                switch (this.lastDirection) {
+                    case Input.RIGHT:
+                        this.kirby.sprite.setAnimation("idle-right")
+                        break
+                    case Input.LEFT:
+                        this.kirby.sprite.setAnimation("idle-left")
+                        break
+                }
+            }
+        )
+    }
+
+
+    pressed(input) {
+        return inputs => inputs.get(input)
+    }
+
+    or(func1, func2) {
+        return inputs => func1(inputs) || func2(inputs)
+    }
+
+    and(func1, func2) {
+        return inputs => func1(inputs) && func2(inputs)
+    }
+
+    not(func) {
+        return inputs => !func(inputs)
+    }
+
+}
 
 export default class Kirby extends Entity {
 
+    constructor() {
+        super();
+        this.movementController = new KirbyMovementController(this)
+    }
+
     createSprite() {
         let kirbySprite = new Sprite(loadJSON("assets/sprites/kirby.json"));
-        kirbySprite.setAnimation("idle")
-
+        kirbySprite.setAnimation("idle-right")
         return kirbySprite;
     }
 
@@ -23,21 +122,30 @@ export default class Kirby extends Entity {
             }
         });
 
-        let right = keyIsDown(RIGHT_ARROW) && onGround;
-        if (right) {
-            Body.applyForce(this.sprite.body, this.sprite.body.position, Vector.rotate(Vector.create(0.006, 0), this.sprite.body.angle))
-        }
-        let left = keyIsDown(LEFT_ARROW) && onGround;
-        if (left) {
-            Body.applyForce(this.sprite.body, this.sprite.body.position, Vector.rotate(Vector.create(-0.006, 0), this.sprite.body.angle))
-        }
+
+        // let right = keyIsDown(RIGHT_ARROW);
+        // if (right  && onGround) {
+        //     Body.applyForce(this.sprite.body, this.sprite.body.position, Vector.rotate(Vector.create(0.006, 0), this.sprite.body.angle))
+        // }
+        // let left = keyIsDown(LEFT_ARROW) ;
+        // if (left  && onGround) {
+        //     Body.applyForce(this.sprite.body, this.sprite.body.position, Vector.rotate(Vector.create(-0.006, 0), this.sprite.body.angle))
+        // }
         if (!this.sprite) {
             return;
         }
-        // if (left || right) {
-        // this.sprite.setAnimation('running')
+        if (this.movementController) {
+            this.movementController.updateInputs();
+        }
+        // if ((left || right) && !(left && right)) {
+        //     if (left) {
+        //         this.sprite.setAnimation('roll-entry-left')
+        //     }
+        //     if (right) {
+        //         this.sprite.setAnimation('roll-entry-right')
+        //     }
         // } else {
-        this.sprite.setAnimation('idle')
+        //     this.sprite.setAnimation('idle')
         // }
         let force = Vector.create(0, 0);
         environment.scene.entities.forEach(entity => {
@@ -46,7 +154,7 @@ export default class Kirby extends Entity {
             }
         })
         if (this.sprite && this.sprite.body) {
-            Body.setAngle(this.sprite.body, 2*Vector.angle(Vector.normalise(force), Vector.create(0, -1)))
+            Body.setAngle(this.sprite.body, 2 * Vector.angle(Vector.normalise(force), Vector.create(0, -1)))
             // this.sprite.body.angle = (Math.PI)+;
         }
     }

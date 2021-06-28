@@ -1,75 +1,539 @@
 {
-  "idle": {
+  "run-right": {
     "frames": [
       {
         "texture": "assets/textures/kirby/run-right-1.png",
         "textureOffsetX": 0,
         "textureOffsetY": 0,
-        "textureWidth": 21,
-        "textureHeight": 19
+        "textureWidth": 42,
+        "textureHeight": 42
       },
       {
         "texture": "assets/textures/kirby/run-right-2.png",
         "textureOffsetX": 0,
         "textureOffsetY": 0,
-        "textureWidth": 20,
-        "textureHeight": 19
+        "textureWidth": 42,
+        "textureHeight": 42
       },
       {
         "texture": "assets/textures/kirby/run-right-3.png",
         "textureOffsetX": 0,
         "textureOffsetY": 0,
-        "textureWidth": 21,
-        "textureHeight": 19
+        "textureWidth": 42,
+        "textureHeight": 42
       },
       {
         "texture": "assets/textures/kirby/run-right-4.png",
         "textureOffsetX": 0,
         "textureOffsetY": 0,
-        "textureWidth": 21,
-        "textureHeight": 19
+        "textureWidth": 42,
+        "textureHeight": 42
       },
       {
         "texture": "assets/textures/kirby/run-right-5.png",
         "textureOffsetX": 0,
         "textureOffsetY": 0,
-        "textureWidth": 21,
-        "textureHeight": 19
+        "textureWidth": 42,
+        "textureHeight": 42
       },
       {
         "texture": "assets/textures/kirby/run-right-6.png",
         "textureOffsetX": 0,
         "textureOffsetY": 0,
-        "textureWidth": 21,
-        "textureHeight": 19
+        "textureWidth": 42,
+        "textureHeight": 42
       },
       {
         "texture": "assets/textures/kirby/run-right-7.png",
         "textureOffsetX": 0,
         "textureOffsetY": 0,
-        "textureWidth": 21,
-        "textureHeight": 19
+        "textureWidth": 42,
+        "textureHeight": 42
       },
       {
         "texture": "assets/textures/kirby/run-right-8.png",
         "textureOffsetX": 0,
         "textureOffsetY": 0,
-        "textureWidth": 21,
-        "textureHeight": 19
+        "textureWidth": 42,
+        "textureHeight": 42
       },
       {
         "texture": "assets/textures/kirby/run-right-9.png",
         "textureOffsetX": 0,
         "textureOffsetY": 0,
-        "textureWidth": 21,
-        "textureHeight": 19
+        "textureWidth": 42,
+        "textureHeight": 42
       },
       {
         "texture": "assets/textures/kirby/run-right-10.png",
         "textureOffsetX": 0,
         "textureOffsetY": 0,
-        "textureWidth": 21,
-        "textureHeight": 19
+        "textureWidth": 42,
+        "textureHeight": 42
+      }
+    ],
+    "vertices": [
+      {
+        "x": 0,
+        "y": 0,
+        "u": 0.0,
+        "v": 0.0
+      },
+      {
+        "x": 63,
+        "y": 0,
+        "u": 1.0,
+        "v": 0.0
+      },
+      {
+        "x": 63,
+        "y": 57,
+        "u": 1.0,
+        "v": 1.0
+      },
+      {
+        "x": 0,
+        "y": 57,
+        "u": 0.0,
+        "v": 1.0
+      }
+    ]
+  },
+  "run-left": {
+    "frames": [
+      {
+        "texture": "assets/textures/kirby/run-left-1.png",
+        "textureOffsetX": 0,
+        "textureOffsetY": 0,
+        "textureWidth": 42,
+        "textureHeight": 42
+      },
+      {
+        "texture": "assets/textures/kirby/run-left-2.png",
+        "textureOffsetX": 0,
+        "textureOffsetY": 0,
+        "textureWidth": 42,
+        "textureHeight": 42
+      },
+      {
+        "texture": "assets/textures/kirby/run-left-3.png",
+        "textureOffsetX": 0,
+        "textureOffsetY": 0,
+        "textureWidth": 42,
+        "textureHeight": 42
+      },
+      {
+        "texture": "assets/textures/kirby/run-left-4.png",
+        "textureOffsetX": 0,
+        "textureOffsetY": 0,
+        "textureWidth": 42,
+        "textureHeight": 42
+      },
+      {
+        "texture": "assets/textures/kirby/run-left-5.png",
+        "textureOffsetX": 0,
+        "textureOffsetY": 0,
+        "textureWidth": 42,
+        "textureHeight": 42
+      },
+      {
+        "texture": "assets/textures/kirby/run-left-6.png",
+        "textureOffsetX": 0,
+        "textureOffsetY": 0,
+        "textureWidth": 42,
+        "textureHeight": 42
+      },
+      {
+        "texture": "assets/textures/kirby/run-left-7.png",
+        "textureOffsetX": 0,
+        "textureOffsetY": 0,
+        "textureWidth": 42,
+        "textureHeight": 42
+      },
+      {
+        "texture": "assets/textures/kirby/run-left-8.png",
+        "textureOffsetX": 0,
+        "textureOffsetY": 0,
+        "textureWidth": 42,
+        "textureHeight": 42
+      },
+      {
+        "texture": "assets/textures/kirby/run-left-9.png",
+        "textureOffsetX": 0,
+        "textureOffsetY": 0,
+        "textureWidth": 42,
+        "textureHeight": 42
+      },
+      {
+        "texture": "assets/textures/kirby/run-left-10.png",
+        "textureOffsetX": 0,
+        "textureOffsetY": 0,
+        "textureWidth": 42,
+        "textureHeight": 42
+      }
+    ],
+    "vertices": [
+      {
+        "x": 0,
+        "y": 0,
+        "u": 0.0,
+        "v": 0.0
+      },
+      {
+        "x": 63,
+        "y": 0,
+        "u": 1.0,
+        "v": 0.0
+      },
+      {
+        "x": 63,
+        "y": 57,
+        "u": 1.0,
+        "v": 1.0
+      },
+      {
+        "x": 0,
+        "y": 57,
+        "u": 0.0,
+        "v": 1.0
+      }
+    ]
+  },
+  "idle-right": {
+    "frames": [
+      {
+        "texture": "assets/textures/kirby/idle-right-1.png",
+        "textureOffsetX": 0,
+        "textureOffsetY": 0,
+        "textureWidth": 42,
+        "textureHeight": 42
+      },
+      {
+        "texture": "assets/textures/kirby/idle-right-2.png",
+        "textureOffsetX": 0,
+        "textureOffsetY": 0,
+        "textureWidth": 42,
+        "textureHeight": 42
+      }
+    ],
+    "vertices": [
+      {
+        "x": 0,
+        "y": 0,
+        "u": 0.0,
+        "v": 0.0
+      },
+      {
+        "x": 63,
+        "y": 0,
+        "u": 1.0,
+        "v": 0.0
+      },
+      {
+        "x": 63,
+        "y": 57,
+        "u": 1.0,
+        "v": 1.0
+      },
+      {
+        "x": 0,
+        "y": 57,
+        "u": 0.0,
+        "v": 1.0
+      }
+    ]
+  },
+  "idle-left": {
+    "frames": [
+      {
+        "texture": "assets/textures/kirby/idle-left-1.png",
+        "textureOffsetX": 0,
+        "textureOffsetY": 0,
+        "textureWidth": 42,
+        "textureHeight": 42
+      },
+      {
+        "texture": "assets/textures/kirby/idle-left-2.png",
+        "textureOffsetX": 0,
+        "textureOffsetY": 0,
+        "textureWidth": 42,
+        "textureHeight": 42
+      }
+    ],
+    "vertices": [
+      {
+        "x": 0,
+        "y": 0,
+        "u": 0.0,
+        "v": 0.0
+      },
+      {
+        "x": 63,
+        "y": 0,
+        "u": 1.0,
+        "v": 0.0
+      },
+      {
+        "x": 63,
+        "y": 57,
+        "u": 1.0,
+        "v": 1.0
+      },
+      {
+        "x": 0,
+        "y": 57,
+        "u": 0.0,
+        "v": 1.0
+      }
+    ]
+  },
+  "roll-entry-left": {
+    "nextAnimation": "roll-left",
+    "frames": [
+      {
+        "texture": "assets/textures/kirby/roll-entry-left-1.png",
+        "textureOffsetX": 0,
+        "textureOffsetY": 0,
+        "textureWidth": 42,
+        "textureHeight": 42
+      },
+      {
+        "texture": "assets/textures/kirby/roll-entry-left-2.png",
+        "textureOffsetX": 0,
+        "textureOffsetY": 0,
+        "textureWidth": 42,
+        "textureHeight": 42
+      },
+      {
+        "texture": "assets/textures/kirby/roll-entry-left-3.png",
+        "textureOffsetX": 0,
+        "textureOffsetY": 0,
+        "textureWidth": 42,
+        "textureHeight": 42
+      },
+      {
+        "texture": "assets/textures/kirby/roll-entry-left-4.png",
+        "textureOffsetX": 0,
+        "textureOffsetY": 0,
+        "textureWidth": 42,
+        "textureHeight": 42
+      },
+      {
+        "texture": "assets/textures/kirby/roll-entry-left-5.png",
+        "textureOffsetX": 0,
+        "textureOffsetY": 0,
+        "textureWidth": 42,
+        "textureHeight": 42
+      },
+      {
+        "texture": "assets/textures/kirby/roll-entry-left-6.png",
+        "textureOffsetX": 0,
+        "textureOffsetY": 0,
+        "textureWidth": 42,
+        "textureHeight": 42
+      },
+      {
+        "texture": "assets/textures/kirby/roll-entry-left-7.png",
+        "textureOffsetX": 0,
+        "textureOffsetY": 0,
+        "textureWidth": 42,
+        "textureHeight": 42
+      }
+    ],
+    "vertices": [
+      {
+        "x": 0,
+        "y": 0,
+        "u": 0.0,
+        "v": 0.0
+      },
+      {
+        "x": 63,
+        "y": 0,
+        "u": 1.0,
+        "v": 0.0
+      },
+      {
+        "x": 63,
+        "y": 57,
+        "u": 1.0,
+        "v": 1.0
+      },
+      {
+        "x": 0,
+        "y": 57,
+        "u": 0.0,
+        "v": 1.0
+      }
+    ]
+  },
+  "roll-entry-right": {
+    "nextAnimation": "roll-right",
+    "frames": [
+      {
+        "texture": "assets/textures/kirby/roll-entry-right-1.png",
+        "textureOffsetX": 0,
+        "textureOffsetY": 0,
+        "textureWidth": 42,
+        "textureHeight": 42
+      },
+      {
+        "texture": "assets/textures/kirby/roll-entry-right-2.png",
+        "textureOffsetX": 0,
+        "textureOffsetY": 0,
+        "textureWidth": 42,
+        "textureHeight": 42
+      },
+      {
+        "texture": "assets/textures/kirby/roll-entry-right-3.png",
+        "textureOffsetX": 0,
+        "textureOffsetY": 0,
+        "textureWidth": 42,
+        "textureHeight": 42
+      },
+      {
+        "texture": "assets/textures/kirby/roll-entry-right-4.png",
+        "textureOffsetX": 0,
+        "textureOffsetY": 0,
+        "textureWidth": 42,
+        "textureHeight": 42
+      },
+      {
+        "texture": "assets/textures/kirby/roll-entry-right-5.png",
+        "textureOffsetX": 0,
+        "textureOffsetY": 0,
+        "textureWidth": 42,
+        "textureHeight": 42
+      },
+      {
+        "texture": "assets/textures/kirby/roll-entry-right-6.png",
+        "textureOffsetX": 0,
+        "textureOffsetY": 0,
+        "textureWidth": 42,
+        "textureHeight": 42
+      },
+      {
+        "texture": "assets/textures/kirby/roll-entry-right-7.png",
+        "textureOffsetX": 0,
+        "textureOffsetY": 0,
+        "textureWidth": 42,
+        "textureHeight": 42
+      }
+    ],
+    "vertices": [
+      {
+        "x": 0,
+        "y": 0,
+        "u": 0.0,
+        "v": 0.0
+      },
+      {
+        "x": 63,
+        "y": 0,
+        "u": 1.0,
+        "v": 0.0
+      },
+      {
+        "x": 63,
+        "y": 57,
+        "u": 1.0,
+        "v": 1.0
+      },
+      {
+        "x": 0,
+        "y": 57,
+        "u": 0.0,
+        "v": 1.0
+      }
+    ]
+  },
+  "roll-right": {
+    "frames": [
+      {
+        "texture": "assets/textures/kirby/roll-right-1.png",
+        "textureOffsetX": 0,
+        "textureOffsetY": 0,
+        "textureWidth": 35,
+        "textureHeight": 36
+      },
+      {
+        "texture": "assets/textures/kirby/roll-right-2.png",
+        "textureOffsetX": 0,
+        "textureOffsetY": 0,
+        "textureWidth": 35,
+        "textureHeight": 36
+      },
+      {
+        "texture": "assets/textures/kirby/roll-right-3.png",
+        "textureOffsetX": 0,
+        "textureOffsetY": 0,
+        "textureWidth": 35,
+        "textureHeight": 36
+      },
+      {
+        "texture": "assets/textures/kirby/roll-right-4.png",
+        "textureOffsetX": 0,
+        "textureOffsetY": 0,
+        "textureWidth": 35,
+        "textureHeight": 36
+      }
+    ],
+    "vertices": [
+      {
+        "x": 0,
+        "y": 0,
+        "u": 0.0,
+        "v": 0.0
+      },
+      {
+        "x": 63,
+        "y": 0,
+        "u": 1.0,
+        "v": 0.0
+      },
+      {
+        "x": 63,
+        "y": 57,
+        "u": 1.0,
+        "v": 1.0
+      },
+      {
+        "x": 0,
+        "y": 57,
+        "u": 0.0,
+        "v": 1.0
+      }
+    ]
+  },
+  "roll-left": {
+    "frames": [
+      {
+        "texture": "assets/textures/kirby/roll-left-1.png",
+        "textureOffsetX": 0,
+        "textureOffsetY": 0,
+        "textureWidth": 35,
+        "textureHeight": 36
+      },
+      {
+        "texture": "assets/textures/kirby/roll-left-2.png",
+        "textureOffsetX": 0,
+        "textureOffsetY": 0,
+        "textureWidth": 35,
+        "textureHeight": 36
+      },
+      {
+        "texture": "assets/textures/kirby/roll-left-3.png",
+        "textureOffsetX": 0,
+        "textureOffsetY": 0,
+        "textureWidth": 35,
+        "textureHeight": 36
+      },
+      {
+        "texture": "assets/textures/kirby/roll-left-4.png",
+        "textureOffsetX": 0,
+        "textureOffsetY": 0,
+        "textureWidth": 35,
+        "textureHeight": 36
       }
     ],
     "vertices": [
