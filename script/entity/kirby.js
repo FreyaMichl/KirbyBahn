@@ -68,10 +68,10 @@ class KirbyMovementController extends MovementController {
             () => {
                 switch (this.lastDirection) {
                     case Input.RIGHT:
-                        this.kirby.sprite.setAnimation("idle-right")
+                        this.kirby.sprite.setAnimation("roll-right")
                         break
                     case Input.LEFT:
-                        this.kirby.sprite.setAnimation("idle-left")
+                        this.kirby.sprite.setAnimation("roll-left")
                         break
                 }
             }
@@ -105,7 +105,33 @@ export default class Kirby extends Entity {
     }
 
     createSprite() {
-        let kirbySprite = new Sprite(loadJSON("assets/sprites/kirby.json"));
+        let kirbySprite = new class extends Sprite {
+            createBody(animation) {
+                let body = super.createBody(animation);
+                body.plugin.attractors = [
+                    function (bodyA, bodyB) {
+                        if (!bodyB.isParticle) {
+                            var vw = windowWidth / 100;
+                            var vh = windowHeight / 100;
+                            // use Newton's law of gravitation
+                            var bToA = Matter.Vector.sub(bodyB.position, bodyA.position),
+                                distanceSq = Matter.Vector.magnitudeSquared(bToA) || 0.001;
+                            distanceSq /= 600;
+                            var normal = Matter.Vector.normalise(bToA),
+                                magnitude = -MatterAttractors.Attractors.gravityConstant * (bodyA.mass * bodyB.mass / distanceSq),
+                                force = Matter.Vector.mult(normal, magnitude);
+                            force.x /= vw / 16;
+                            force.y /= vw / 16;
+                            // to apply forces to both bodies
+                            Body.applyForce(bodyA, bodyA.position, Matter.Vector.neg(force));
+                            Body.applyForce(bodyB, bodyB.position, force);
+                        }
+                    }
+                ]
+
+                return body;
+            }
+        }(loadJSON("assets/sprites/kirby.json"), {position: {x: 1200, y: 200}, restitution: 0.8});
         kirbySprite.setAnimation("idle-right")
         return kirbySprite;
     }
@@ -122,45 +148,16 @@ export default class Kirby extends Entity {
             }
         });
 
-
-        // let right = keyIsDown(RIGHT_ARROW);
-        // if (right  && onGround) {
-        //     Body.applyForce(this.sprite.body, this.sprite.body.position, Vector.rotate(Vector.create(0.006, 0), this.sprite.body.angle))
-        // }
-        // let left = keyIsDown(LEFT_ARROW) ;
-        // if (left  && onGround) {
-        //     Body.applyForce(this.sprite.body, this.sprite.body.position, Vector.rotate(Vector.create(-0.006, 0), this.sprite.body.angle))
-        // }
         if (!this.sprite) {
             return;
         }
         if (this.movementController) {
             this.movementController.updateInputs();
         }
-        // if ((left || right) && !(left && right)) {
-        //     if (left) {
-        //         this.sprite.setAnimation('roll-entry-left')
-        //     }
-        //     if (right) {
-        //         this.sprite.setAnimation('roll-entry-right')
-        //     }
-        // } else {
-        //     this.sprite.setAnimation('idle')
-        // }
-        let force = Vector.create(0, 0);
-        environment.scene.entities.forEach(entity => {
-            if (entity.sprite.body !== this.sprite.body) {
-                Vector.add(this.calculateForce(entity.sprite.body), force, force);
-            }
-        })
-        if (this.sprite && this.sprite.body) {
-            Body.setAngle(this.sprite.body, 2 * Vector.angle(Vector.normalise(force), Vector.create(0, -1)))
-            // this.sprite.body.angle = (Math.PI)+;
-        }
     }
 
     calculateForce(bodyB) {
-        let result = {x: 0, y: 0};
+        let result = Vector.create(0, 0);
         if (!bodyB) return result;
         let bodyA = this.sprite.body;
         if (!bodyA) return result;

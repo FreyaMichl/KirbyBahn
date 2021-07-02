@@ -16,30 +16,10 @@ class PlanetSprite extends SimpleSprite {
       this.y,
       this.size, {
         isStatic: true,
-        mass: 20,
+        mass: 15,
         restitution: 0.7,
       },
       64);
-    body.plugin.attractors = [
-      function(bodyA, bodyB) {
-        if (bodyB.isParticle != true) {
-          var vw = windowWidth / 100;
-          var vh = windowHeight / 100;
-          // use Newton's law of gravitation
-          var bToA = Matter.Vector.sub(bodyB.position, bodyA.position),
-            distanceSq = Matter.Vector.magnitudeSquared(bToA) || 0.001;
-          distanceSq /= 600;
-          var normal = Matter.Vector.normalise(bToA),
-            magnitude = -MatterAttractors.Attractors.gravityConstant * (bodyA.mass * bodyB.mass / distanceSq),
-            force = Matter.Vector.mult(normal, magnitude);
-          force.x /= vw / 16;
-          force.y /= vw / 16;
-          // to apply forces to both bodies
-          Body.applyForce(bodyA, bodyA.position, Matter.Vector.neg(force));
-          Body.applyForce(bodyB, bodyB.position, force);
-        }
-      }
-    ]
     return body;
   }
   draw() {

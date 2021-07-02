@@ -1,37 +1,49 @@
 export default class Sprite {
 
-    constructor(animations) {
+    constructor(animations, options) {
         this.animations = animations;
+        this.options = options || {};
     }
 
     setAnimation(name) {
         let currentAnimation = this.animations[this.currentAnimationName];
-        if(this.currentAnimationName && currentAnimation){
+        if (this.currentAnimationName && currentAnimation) {
             currentAnimation.playedFrames = 0;
         }
         this.currentAnimationName = name
     }
 
     createBody(animation) {
-        let body = Body.create(Common.extend({
-            position: {
-                x: 600,
-                y: 200
-            },
-            vertices: this.animations[animation].vertices
-        }));
-        body.plugin.wrap = {
-            min: {
-                x: 0,
-                y: 0
-            },
-            max: {
-                x: environment.canvas.width,
-                y: environment.canvas.height
-            }
-        }
+
+        let body = Bodies
+            .fromVertices(
+                200,
+                200,
+                this.animations[animation].vertices,
+                Object.assign(
+                    {},
+                    {
+                        frictionAir: 0,
+                        plugin: {
+                            wrap: {
+                                min: {
+                                    x: 0,
+                                    y: 0
+                                },
+                                max: {
+                                    x: environment.canvas.width,
+                                    y: environment.canvas.height
+                                }
+                            }
+                        }
+                    },
+                    this.options
+                ),
+                true
+            );
         return body;
     }
+
 
     draw() {
         if (!this.isSelectedAnimationsAvailable()) {
@@ -89,9 +101,9 @@ export default class Sprite {
         currentAnimation.playedFrames++;
 
         let frame = Math.floor(currentAnimation.playedFrames / 5);
-        if(frame >= this.animations[this.currentAnimationName].frames.length && this.animations[this.currentAnimationName].nextAnimation){
-          this.setAnimation(this.animations[this.currentAnimationName].nextAnimation);
-          return this.ensureSelectedAnimationsAvailable();
+        if (frame >= this.animations[this.currentAnimationName].frames.length && this.animations[this.currentAnimationName].nextAnimation) {
+            this.setAnimation(this.animations[this.currentAnimationName].nextAnimation);
+            return this.ensureSelectedAnimationsAvailable();
         }
         let targetFrame = currentAnimation.frames[(frame % currentAnimation.frames.length)];
         this.currentFrame = targetFrame;
@@ -114,24 +126,45 @@ export default class Sprite {
         if (!this.body) {
             this.body = this.createBody(this.currentAnimationName);
             World.add(environment.engine.world, this.body);
-
         }
     }
 
-    drawVertices() {
-        beginShape();
-        if (this.currentAnimationName) {
-            texture(this.currentFrame.loadedTexture);
-            textureMode(NORMAL)
-        }
 
-        this.body.vertices.forEach(bodyVertex => {
+    drawVertices2(vertices) {
+        beginShape();
+        for (let i = 0; i < vertices.length; i++) {
+            let bodyVertex = vertices[i];
             if (this.currentAnimationName) {
                 vertex(bodyVertex.x, bodyVertex.y, bodyVertex.u, bodyVertex.v);
             } else {
                 vertex(bodyVertex.x, bodyVertex.y);
             }
-        });
+        }
+        endShape(CLOSE);
+    }
+
+
+    drawVertices() {
+        if(this.body.draw === false ){
+            return
+        }
+        if (this.body.drawMode) {
+            beginShape(this.body.drawMode);
+        } else {
+            beginShape();
+        }
+        if (this.currentAnimationName) {
+            texture(this.currentFrame.loadedTexture);
+            textureMode(NORMAL)
+        }
+        noStroke();
+        if (this.body.parts && this.body.parts.length > 1) {
+            for (let p = 1; p < this.body.parts.length; p++) {
+                this.drawVertices2(this.body.parts[p].vertices)
+            }
+        } else {
+            this.drawVertices2(this.body.vertices);
+        }
         endShape(CLOSE);
     }
 }
@@ -171,13 +204,11 @@ export class SimpleSprite {
         } else {
             texture(this.texture);
             textureMode(NORMAL)
-
             let max = this.body.bounds.max;
             let min = this.body.bounds.min;
 
             let bodyWidth = max.x - min.x;
             let bodyHeight = max.y - min.y;
-
             this.body.vertices.forEach(bodyVertex => {
                 let u = (bodyVertex.x - min.x) / bodyWidth
                 let v = (bodyVertex.y - min.y) / bodyHeight

@@ -11,6 +11,9 @@ export default class Entity {
     }
   }
 
+  preload(){
+  }
+
   afterTick() {
     if (!this.sprite) {
       return;
