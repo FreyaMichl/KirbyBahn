@@ -152,11 +152,11 @@ export default class Sprite {
             beginShape();
         }
         if (this.currentAnimationName) {
-            smooth()
             texture(this.currentFrame.loadedTexture);
             textureMode(NORMAL)
         }
 
+        // fill('black')
         noStroke();
         if (this.body.parts && this.body.parts.length > 1) {
             for (let p = 1; p < this.body.parts.length; p++) {

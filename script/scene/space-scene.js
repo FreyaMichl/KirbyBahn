@@ -36,8 +36,8 @@ class SpaceScene extends Scene {
 
   createBridge() {
     let parts = []
-    for (let i = 0; i < 14; i++) {
-      parts[i] = new Bridge("assets/textures/interactionElements/bridge_wood.png", 540 + i * 23, 1000, () => {
+    for (let i = 0; i < 20; i++) {
+      parts[i] = new Bridge("assets/textures/interactionElements/bridge_wood.png", 540 + i * 23, 2130, () => {
         let done = true;
         for (let j = 0; j < parts.length; j++) {
           if (j === i) continue
@@ -62,8 +62,9 @@ class SpaceScene extends Scene {
                 x: -10.5,
                 y: 0
               },
-              stiffness: 0.2,
-              damping: 0,
+              restitution: 1,
+              stiffness: 0.4,
+              damping: 0.01,
               length: 2
             }))
           }
@@ -71,9 +72,9 @@ class SpaceScene extends Scene {
           Matter.World.add(environment.engine.world, Matter.Constraint.create({
             bodyB: parts[0].sprite.body,
             pointA: {
-              x: 520,
-              y: 1485,
-              length: 100,
+              x: 320,
+              y: 2130,
+               length: 100,
               stiffness: 1
             },
             pointB: {
@@ -86,8 +87,8 @@ class SpaceScene extends Scene {
           Matter.World.add(environment.engine.world, Matter.Constraint.create({
             bodyB: parts[parts.length - 1].sprite.body,
             pointA: {
-              x: 860,
-              y: 1485,
+              x: 800,
+              y: 2130,
               length: 100,
               stiffness: 1
             },

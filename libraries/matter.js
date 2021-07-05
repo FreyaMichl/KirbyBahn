@@ -4718,7 +4718,7 @@ var Vector = __webpack_require__(2);
                     decomp.removeDuplicatePoints(concave, removeDuplicatePoints);
 
                 // use the quick decomposition algorithm (Bayazit)
-                var decomposed = decomp.quickDecomp(concave);
+                var decomposed = decomp.quickDecomp(concave, undefined, undefined, undefined, undefined, 1000);
 
                 // for each decomposed chunk
                 for (i = 0; i < decomposed.length; i++) {
