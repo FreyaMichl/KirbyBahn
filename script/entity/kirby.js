@@ -9,10 +9,15 @@ class KirbyMovementController extends MovementController {
         this.kirby = kirby;
 
         this.lastDirection = Input.RIGHT;
-        let right = this.pressed(Input.RIGHT)
-        let left = this.pressed(Input.LEFT);
-        let down = this.pressed(Input.DOWN);
-        let up = this.pressed(Input.UP);
+        let right = inputs => {
+            if(!kirby || !kirby.sprite || !kirby.sprite.body) return false;
+            return kirby.sprite.body.velocity.x > 0.1;
+        }
+        let left = inputs => {
+            if(!kirby || !kirby.sprite || !kirby.sprite.body) return false;
+            return kirby.sprite.body.velocity.x < -0.1;
+        }
+        let down = inputs => false;
 
         let rollRight = this.and(down, right);
         let rollLeft = this.and(down, left);
@@ -55,12 +60,12 @@ class KirbyMovementController extends MovementController {
 
         this.registerInputCombination(
             walkRight,
-            () => this.kirby.sprite.setAnimation("run-right")
+            () => this.kirby.sprite.setAnimation("roll-right")
         )
 
         this.registerInputCombination(
             walkLeft,
-            () => this.kirby.sprite.setAnimation("run-left")
+            () => this.kirby.sprite.setAnimation("roll-left")
         )
 
         this.registerInputCombination(
@@ -68,10 +73,10 @@ class KirbyMovementController extends MovementController {
             () => {
                 switch (this.lastDirection) {
                     case Input.RIGHT:
-                        this.kirby.sprite.setAnimation("roll-right")
+                        this.kirby.sprite.setAnimation("idle-right")
                         break
                     case Input.LEFT:
-                        this.kirby.sprite.setAnimation("roll-left")
+                        this.kirby.sprite.setAnimation("idle-left")
                         break
                 }
             }
@@ -131,7 +136,14 @@ export default class Kirby extends Entity {
 
                 return body;
             }
-        }(loadJSON("assets/sprites/kirby.json"), {position: {x: 1200, y: 200}, restitution: 0.8});
+        }(loadJSON("assets/sprites/kirby.json"), {
+            mass: 1,
+            position: {
+                x: 1200,
+                y: 200
+            },
+            restitution: 0.3
+        });
         kirbySprite.setAnimation("idle-right")
         return kirbySprite;
     }

@@ -1,8 +1,8 @@
 export const Input = Object.freeze({
-    "LEFT": 37,
-    "RIGHT": 39,
-    "UP": 38,
-    "DOWN": 40
+    "LEFT": ()=>keyIsDown(37),
+    "RIGHT": ()=>keyIsDown(39),
+    "UP": ()=>keyIsDown(32),
+    "DOWN": ()=>keyIsDown(40)
 })
 
 class InputConstraint {
@@ -22,12 +22,12 @@ class InputConstraint {
 const leftRightConstraint = new InputConstraint(Input.LEFT, Input.RIGHT);
 const upDownConstraint = new InputConstraint(Input.UP, Input.DOWN);
 
-const InputConstraints = {
-    37: leftRightConstraint,
-    39: leftRightConstraint,
-    38: upDownConstraint,
-    40: upDownConstraint
-}
+const InputConstraints = new Map;
+
+InputConstraints.set("LEFT", leftRightConstraint)
+InputConstraints.set("RIGHT", leftRightConstraint)
+InputConstraints.set("UP", upDownConstraint)
+InputConstraints.set("DOWN", upDownConstraint)
 
 export class MovementController {
 
@@ -43,8 +43,8 @@ export class MovementController {
     }
 
     updateInputs() {
-        Object.values(Input).forEach(value => {
-            this.setInput(value, keyIsDown(value));
+        Object.keys(Input).forEach(key => {
+            this.setInput(key, Input[key]());
         })
         this.validateInputs();
     }
@@ -56,9 +56,10 @@ export class MovementController {
     validateInputs() {
         this.currentInputs.forEach((value, key) => {
             if (this.isPressed(key)) {
-                InputConstraints[key].check(this);
+                InputConstraints.get(key).check(this);
             }
         })
+
         this.combinations.forEach((value, key) => {
             let result = key(this.currentInputs);
             if(result !== this.currentCombinationValues.get(key)){
