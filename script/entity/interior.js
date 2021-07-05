@@ -8,7 +8,7 @@ export default class Interior extends Entity {
 
       createBody(animation) {
         let body = super.createBody(animation);
-        Body.setPosition(body, Vector.create(910, 1722));
+        Body.setPosition(body, Vector.create(910, 2042));
         return body;
       }
     }(loadJSON("assets/sprites/spaceship_whole_interior.json"), {
