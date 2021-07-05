@@ -8,7 +8,7 @@ export default class Interior extends Entity {
 
       createBody(animation) {
         let body = super.createBody(animation);
-        Body.setPosition(body, Vector.create(845, 3210));
+        Body.setPosition(body, Vector.create(880, 3010));
         return body;
       }
     }(loadJSON("assets/sprites/spaceship_whole_interior.json"), {
@@ -30,11 +30,11 @@ export default class Interior extends Entity {
           let width = this.sprite.body.bounds.max.x - this.sprite.body.bounds.min.x+100;
           let height = this.sprite.body.bounds.max.y - this.sprite.body.bounds.min.y + 700;
       image(
-        this.actualOutline,
-        this.sprite.body.position.x - width / 2 +65,
-        this.sprite.body.position.y - height / 2 +0,
-        width,
-        height)
+          this.actualOutline,
+          this.sprite.body.position.x - width / 2 + 25,
+          this.sprite.body.position.y - height / 2 + 202,
+          width,
+          height)
     }
   }
 

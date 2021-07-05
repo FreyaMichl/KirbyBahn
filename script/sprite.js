@@ -156,8 +156,6 @@ export default class Sprite {
             textureMode(NORMAL)
         }
 
-        // fill('black')
-        noStroke();
         if (this.body.parts && this.body.parts.length > 1) {
             for (let p = 1; p < this.body.parts.length; p++) {
                 this.drawVertices2(this.body.parts[p].vertices)
@@ -204,6 +202,7 @@ export class SimpleSprite {
         } else {
             texture(this.texture);
             textureMode(NORMAL)
+
             let max = this.body.bounds.max;
             let min = this.body.bounds.min;
 

@@ -1,7 +1,7 @@
 export default class Entity {
 
   draw() {
-    this.ensureSpriteExists();
+    this.ensureSpriteExists() ;
     this.sprite.draw()
   }
 
