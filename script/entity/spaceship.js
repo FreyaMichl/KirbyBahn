@@ -30,7 +30,7 @@ export default class Spaceship extends Entity {
         if (this.sprite.body) {
             let width = this.sprite.body.bounds.max.x - this.sprite.body.bounds.min.x;
             let height = this.sprite.body.bounds.max.y - this.sprite.body.bounds.min.y;
-            image(this.actualOutline, this.sprite.body.position.x - width / 2 + 23, this.sprite.body.position.y - height / 2, width, height)
+            image(this.actualOutline, this.sprite.body.position.x - width / 2 + 23, this.sprite.body.position.y - height + 2500, width, height)
         }
     }
 
