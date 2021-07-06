@@ -6,13 +6,15 @@ import Interior from "../entity/interior.js";
 import Bridge from "../entity/interactionElements/bridge.js";
 import Tomato from "../entity/interactionElements/tomato.js";
 import Tree from "../entity/interactionElements/tree.js";
+import Magnet from "../entity/interactionElements/magnet.js";
+import Crystal from "../entity/interactionElements/crystal.js";
 
 class SpaceScene extends Scene {
 
   constructor() {
     super();
-    this.tomato1 = new Tomato("assets/textures/interactionElements/tomato.png", 650, 1940);
-    this.tomato2 = new Tomato("assets/textures/interactionElements/tomato.png", 800, 1957);
+    this.tomato1 = new Tomato("assets/textures/interactionElements/tomato.png", 650, 2940);
+    this.tomato2 = new Tomato("assets/textures/interactionElements/tomato.png", 800, 2957);
     this.treelittle = new Tree("assets/textures/interactionElements/tree_little.png", 100, 100, 33, 60)
     this.treemiddle = new Tree("assets/textures/interactionElements/tree_middle.png", 200, 100, 44, 77)
     this.treebig = new Tree("assets/textures/interactionElements/tree_big.png", 300, 100, 53, 94)
@@ -21,6 +23,11 @@ class SpaceScene extends Scene {
     this.kirby = new Kirby();
     this.planet1 = new Planet("assets/textures/interactionElements/planet.png", 1500, 400, 250);
     this.planet2 = new Planet("assets/textures/interactionElements/earth_planet.png", 400, 700, 200);
+    this.magnet = new Magnet();
+    this.crystal1Left = new Crystal("one_left", 0);
+    this.crystal1Right = new Crystal("one_right", 60);
+    this.crystal2Left = new Crystal("two_left", 120);
+    this.crystal2Right = new Crystal("two_right", 200);
     this.addEntity(this.planet1);
     this.addEntity(this.planet2);
     this.addEntity(this.spaceship);
@@ -31,6 +38,11 @@ class SpaceScene extends Scene {
     this.addEntity(this.treelittle);
     this.addEntity(this.treemiddle);
     this.addEntity(this.treebig);
+    this.addEntity(this.magnet);
+    this.addEntity(this.crystal1Left);
+    this.addEntity(this.crystal1Right);
+    this.addEntity(this.crystal2Left);
+    this.addEntity(this.crystal2Right);
     this.createBridge();
   }
 
@@ -64,7 +76,7 @@ class SpaceScene extends Scene {
               },
               restitution: 1,
               stiffness: 0.4,
-              damping: 0.01,
+              damping: 0.0,
               length: 2
             }))
           }
@@ -75,7 +87,9 @@ class SpaceScene extends Scene {
               x: 320,
               y: 2130,
                length: 100,
-              stiffness: 1
+              stiffness: 0.4,
+              restitution: 1,
+              damping: 0
             },
             pointB: {
               x: -10.5,

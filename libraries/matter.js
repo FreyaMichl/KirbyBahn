@@ -2426,6 +2426,8 @@ var Axes = __webpack_require__(10);
             position: { x: 0, y: 0 },
             force: { x: 0, y: 0 },
             torque: 0,
+            gravityScale: 1,
+            movementScale: {x: 1, y: 1},
             positionImpulse: { x: 0, y: 0 },
             constraintImpulse: { x: 0, y: 0, angle: 0 },
             totalContacts: 0,
@@ -2877,6 +2879,16 @@ var Axes = __webpack_require__(10);
     };
 
     /**
+     * Sets the gravity scale of the body
+     * @method setAngle
+     * @param {body} body
+     * @param {number} scale
+     */
+    Body.setGravityScale = function (body, scale) {
+        body.gravityScale = scale
+    }
+
+    /**
      * Sets the linear velocity of the body instantly. Position, angle, force etc. are unchanged. See also `Body.applyForce`.
      * @method setVelocity
      * @param {body} body
@@ -3018,8 +3030,8 @@ var Axes = __webpack_require__(10);
             velocityPrevY = body.position.y - body.positionPrev.y;
 
         // update velocity with Verlet integration
-        body.velocity.x = (velocityPrevX * frictionAir * correction) + (body.force.x / body.mass) * deltaTimeSquared;
-        body.velocity.y = (velocityPrevY * frictionAir * correction) + (body.force.y / body.mass) * deltaTimeSquared;
+        body.velocity.x = (velocityPrevX * frictionAir * correction) + (body.force.x / body.mass) * deltaTimeSquared * body.movementScale.x;
+        body.velocity.y = (velocityPrevY * frictionAir * correction) + (body.force.y / body.mass) * deltaTimeSquared  * body.movementScale.y;
 
         body.positionPrev.x = body.position.x;
         body.positionPrev.y = body.position.y;
@@ -7937,8 +7949,8 @@ var Body = __webpack_require__(6);
                 continue;
 
             // apply gravity
-            body.force.y += body.mass * gravity.y * gravityScale;
-            body.force.x += body.mass * gravity.x * gravityScale;
+            body.force.y += body.mass * gravity.y * gravityScale * body.gravityScale;
+            body.force.x += body.mass * gravity.x * gravityScale * body.gravityScale;
         }
     };
 

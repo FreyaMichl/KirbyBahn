@@ -10,11 +10,11 @@ class KirbyMovementController extends MovementController {
 
         this.lastDirection = Input.RIGHT;
         let right = inputs => {
-            if(!kirby || !kirby.sprite || !kirby.sprite.body) return false;
+            if (!kirby || !kirby.sprite || !kirby.sprite.body) return false;
             return kirby.sprite.body.velocity.x > 0.1;
         }
         let left = inputs => {
-            if(!kirby || !kirby.sprite || !kirby.sprite.body) return false;
+            if (!kirby || !kirby.sprite || !kirby.sprite.body) return false;
             return kirby.sprite.body.velocity.x < -0.1;
         }
         let down = inputs => false;
@@ -142,6 +142,7 @@ export default class Kirby extends Entity {
                 x: 1200,
                 y: 200
             },
+            inertia: Infinity,
             restitution: 0.3
         });
         kirbySprite.setAnimation("idle-right")
