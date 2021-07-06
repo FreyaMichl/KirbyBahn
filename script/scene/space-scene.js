@@ -13,8 +13,13 @@ class SpaceScene extends Scene {
 
   constructor() {
     super();
+<<<<<<< HEAD
     this.tomato1 = new Tomato("assets/textures/interactionElements/tomato.png", 650, 2940);
     this.tomato2 = new Tomato("assets/textures/interactionElements/tomato.png", 800, 2957);
+=======
+    this.tomato1 = new Tomato("assets/textures/interactionElements/tomato.png", 530, 2830);
+    this.tomato2 = new Tomato("assets/textures/interactionElements/tomato.png", 750, 2855);
+>>>>>>> 6862f4855f8b36222e8813cd969a0b1131d31442
     this.treelittle = new Tree("assets/textures/interactionElements/tree_little.png", 100, 100, 33, 60)
     this.treemiddle = new Tree("assets/textures/interactionElements/tree_middle.png", 200, 100, 44, 77)
     this.treebig = new Tree("assets/textures/interactionElements/tree_big.png", 300, 100, 53, 94)
@@ -86,10 +91,15 @@ class SpaceScene extends Scene {
             pointA: {
               x: 320,
               y: 2130,
+<<<<<<< HEAD
                length: 100,
               stiffness: 0.4,
               restitution: 1,
               damping: 0
+=======
+              length: 100,
+              stiffness: 1
+>>>>>>> 6862f4855f8b36222e8813cd969a0b1131d31442
             },
             pointB: {
               x: -10.5,
