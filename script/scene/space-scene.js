@@ -9,6 +9,7 @@ import Tree from "../entity/interactionElements/tree.js";
 import Magnet from "../entity/interactionElements/magnet.js";
 import Crystal from "../entity/interactionElements/crystal.js";
 import Collision from "../entity/interactionElements/collision.js";
+import Portal from "../entity/interactionElements/portal.js";
 
 class SpaceScene extends Scene {
 
@@ -29,16 +30,17 @@ class SpaceScene extends Scene {
         this.crystal1Right = new Crystal("one_right", 60);
         this.crystal2Left = new Crystal("two_left", 120);
         this.crystal2Right = new Crystal("two_right", 200);
+        this.portal = new Portal("assets/textures/interactionElements/portal.png", 890, 5200)
         this.collision = new Collision(600, 1630, 300, 20, -0.628319,
             () => this.kirby.sprite.body,
             () => {
-            this.planet1.sprite.body.mass = 0.00000000000001
-            this.planet2.sprite.body.mass = 0.00000000000001
-            environment.engine.world.gravity.scale = 0.00016
-            this.kirby.setJumpControl("right")
-            this.kirby.sprite.body.friction = 0
+                this.planet1.sprite.body.mass = 0.00000000000001
+                this.planet2.sprite.body.mass = 0.00000000000001
+                environment.engine.world.gravity.scale = 0.00016
+                this.kirby.setJumpControl("right")
+                this.kirby.sprite.body.friction = 0
 
-        });
+            });
         this.addEntity(this.planet1);
         this.addEntity(this.planet2);
         this.addEntity(this.spaceship);
@@ -55,6 +57,7 @@ class SpaceScene extends Scene {
         this.addEntity(this.crystal2Left);
         this.addEntity(this.crystal2Right);
         this.addEntity(this.collision);
+        this.addEntity(this.portal);
         this.createBridge();
     }
 
