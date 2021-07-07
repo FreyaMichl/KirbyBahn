@@ -56,8 +56,11 @@ class SpaceScene extends Scene {
             this.magnet.dropKirby();
             this.kirby.setJumpControl("left-down")
         })
-        this.treeCollision = new Collision(1410, 3250, 120, 100, 0, () => this.kirby.sprite.body, () => {
-            this.kirby.setJumpControl("left-up")
+        this.treeCollision = new Collision(1410, 3400, 120, 100, 0, () => this.kirby.sprite.body, () => {
+            this.kirby.setJumpControl("left-down")
+        })
+        this.bladeEntryCollision = new Collision(630, 3840, 120, 100, 0, () => this.kirby.sprite.body, () => {
+            this.kirby.setJumpControl("center-up")
         })
         this.addEntity(this.planet1);
         this.addEntity(this.planet2);
@@ -79,6 +82,7 @@ class SpaceScene extends Scene {
         this.addEntity(this.magnetStopCollision);
         this.addEntity(this.cafeteriaEnterCollision);
         this.addEntity(this.treeCollision);
+        this.addEntity(this.bladeEntryCollision);
         this.addEntity(this.rotor1);
         this.addEntity(this.rotor2);
         this.addEntity(this.rotor3);

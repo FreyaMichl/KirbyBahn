@@ -29,7 +29,7 @@ export default class Interior extends Entity {
   afterTick() {
      super.afterTick();
      if(!this.sprite || !this.sprite.body)return
-    if(environment.scene.kirby.sprite && environment.scene.kirby.sprite.body && environment.scene.kirby.sprite.body.position.y > 4427){
+    if(environment.scene.kirby.sprite && environment.scene.kirby.sprite.body && environment.scene.kirby.sprite.body.position.y > 4426){
       this.sprite.body.collisionFilter.category = 0
     }else{
       this.sprite.body.collisionFilter.category = 1

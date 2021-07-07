@@ -51,14 +51,21 @@ export default class Portal extends Entity {
         if (this?.sprite?.body && environment.scene?.kirby?.sprite?.body) {
             if (Matter.SAT.collides(environment.scene.kirby.sprite.body, this.sprite.body).collided && !this.collided) {
                 this.collided = true;
-                World.add(environment.engine.world, Matter.Constraint.create({
+                let constraint = Matter.Constraint.create({
                     bodyA: environment.scene.kirby.sprite.body,
                     pointB: {
                         x: this.sprite.body.position.x,
                         y: this.sprite.body.position.y
                     },
-                    stiffness: 0.1
-                }))
+                    stiffness: 1
+                });
+                World.add(environment.engine.world, constraint)
+                let interval = setInterval(() => {
+                    if (constraint.length < 0.01) {
+                        clearInterval(interval);
+                    }
+                    constraint.length *= 0.999
+                }, 5)
             }
         }
 
