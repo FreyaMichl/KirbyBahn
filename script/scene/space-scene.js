@@ -10,6 +10,7 @@ import Magnet from "../entity/interactionElements/magnet.js";
 import Crystal from "../entity/interactionElements/crystal.js";
 import Collision from "../entity/interactionElements/collision.js";
 import Portal from "../entity/interactionElements/portal.js";
+import Rotor from "../entity/interactionElements/rotor.js";
 import environment from "../environment.js";
 
 class SpaceScene extends Scene {
@@ -31,6 +32,10 @@ class SpaceScene extends Scene {
         this.crystal2Left = new Crystal("two_left", 120);
         this.crystal2Right = new Crystal("two_right", 200);
         this.portal = new Portal("assets/textures/interactionElements/portal.png", 890, 5200)
+        this.rotor1 = new Rotor("assets/textures/interactionElements/motor_blade.png", 640, 4088, 0.07);
+        this.rotor2 = new Rotor("assets/textures/interactionElements/motor_blade.png", 915, 3952, -0.07);
+        this.rotor3 = new Rotor("assets/textures/interactionElements/motor_blade.png", 778, 4228, 0.07);
+        this.rotor4 = new Rotor("assets/textures/interactionElements/motor_blade.png", 1053, 4228, -0.07);
         this.entryCollision = new Collision(600, 1630, 300, 20, -0.628319,
             () => this.kirby.sprite.body,
             () => {
@@ -74,6 +79,10 @@ class SpaceScene extends Scene {
         this.addEntity(this.magnetStopCollision);
         this.addEntity(this.cafeteriaEnterCollision);
         this.addEntity(this.treeCollision);
+        this.addEntity(this.rotor1);
+        this.addEntity(this.rotor2);
+        this.addEntity(this.rotor3);
+        this.addEntity(this.rotor4);
         this.createBridge();
     }
 
