@@ -180,17 +180,11 @@ function keyReleased() {
 
 function draw() {
   clear();
-  fill(255);
 
   engine.world.bodies.forEach((body, i) => {
     drawVertices(body.vertices);
   });
   drawBodies(bridge.bodies);
-  stroke(255);
-  fill(255);
-
-  stroke(128);
-  strokeWeight(2);
   drawConstraints(bridge.constraints);
 }
 

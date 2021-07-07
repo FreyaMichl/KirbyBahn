@@ -18,9 +18,7 @@ class SpaceScene extends Scene {
         super();
         this.tomato1 = new Tomato("assets/textures/interactionElements/tomato.png", 530, 2830);
         this.tomato2 = new Tomato("assets/textures/interactionElements/tomato.png", 750, 2855);
-        this.treelittle = new Tree("assets/textures/interactionElements/tree_little.png", 1390, 3460, 33 * 3, 60 * 3)
-        this.treemiddle = new Tree("assets/textures/interactionElements/tree_middle.png", 1310, 3435, 44 * 3, 77 * 3)
-        this.treebig = new Tree("assets/textures/interactionElements/tree_big.png", 1200, 3410, 53 * 3, 94 * 3)
+        this.trees = new Tree(1330, 3470, 33 * 3, 60 * 3)
         this.interior = new Interior();
         this.spaceshipLeft = new Spaceship("left", -415, 178);
         this.spaceshipRight = new Spaceship("right", 380, 110);
@@ -64,9 +62,7 @@ class SpaceScene extends Scene {
         this.addEntity(this.kirby);
         this.addEntity(this.tomato1);
         this.addEntity(this.tomato2);
-        this.addEntity(this.treelittle);
-        this.addEntity(this.treebig);
-        this.addEntity(this.treemiddle);
+        this.addEntity(this.trees);
         this.addEntity(this.magnet);
         this.addEntity(this.crystal1Left);
         this.addEntity(this.crystal1Right);

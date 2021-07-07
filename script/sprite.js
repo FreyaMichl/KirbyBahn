@@ -148,6 +148,7 @@ export default class Sprite {
         if (this.body.draw === false) {
             return
         }
+
         if (this.body.drawMode) {
             beginShape(this.body.drawMode);
         } else {
@@ -157,7 +158,6 @@ export default class Sprite {
             texture(this.currentFrame.loadedTexture);
             textureMode(NORMAL)
         }
-
         if (this.body.parts && this.body.parts.length > 1) {
             for (let p = 1; p < this.body.parts.length; p++) {
                 this.drawVertices2(this.body.parts[p].vertices)
@@ -206,8 +206,6 @@ export class SimpleSprite {
                 vertex(bodyVertex.x, bodyVertex.y);
             });
         } else {
-            fill('black')
-
             texture(this.texture);
             textureMode(NORMAL)
 

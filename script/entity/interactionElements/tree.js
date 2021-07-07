@@ -1,28 +1,25 @@
 import Entity from "../../entity.js";
-import {
-  SimpleSprite
-} from "../../sprite.js";
+import Sprite from "../../sprite.js";
 
-class TreeSprite extends SimpleSprite {
-  constructor(texture, x, y, sizeX, sizeY) {
-    super(texture)
+class TreeSprite extends Sprite {
+  constructor( x, y, sizeX, sizeY) {
+    super(loadJSON("assets/sprites/trees.json"),
+        {
+          isStatic: true,
+          mass: 0.0000001,
+          restitution: 1,
+          position: {
+            x: x,
+            y: y
+          }
+        })
     this.x = x
     this.y = y
     this.sizeX = sizeX
     this.sizeY = sizeY
+    this.setAnimation("idle")
   }
-  createBody() {
-    let body = Bodies.rectangle(
-      this.x,
-      this.y,
-      this.sizeX,
-      this.sizeY, {
-        isStatic: true,
-        mass: 0.0000001,
-        restitution: 1,
-      });
-    return body;
-  }
+
   draw() {
     super.draw();
   }
@@ -30,9 +27,8 @@ class TreeSprite extends SimpleSprite {
 
 export default class Tree extends Entity {
 
-  constructor(texture, x, y, sizeX, sizeY) {
+  constructor( x, y, sizeX, sizeY) {
     super();
-    this.texture = texture;
     this.x = x;
     this.y = y;
     this.sizeX = sizeX;
@@ -40,11 +36,10 @@ export default class Tree extends Entity {
   }
 
   createSprite() {
-    return new TreeSprite(this.texture, this.x, this.y, this.sizeX, this.sizeY);
+    return new TreeSprite(this.x, this.y, this.sizeX, this.sizeY);
   }
 
-
-  afterTick() {
-
+  draw() {
+    super.draw();
   }
 }
