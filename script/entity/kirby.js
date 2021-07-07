@@ -11,12 +11,16 @@ class KirbyMovementController extends MovementController {
         this.lastDirection = Input.RIGHT;
         let right = inputs => {
             if (!kirby || !kirby.sprite || !kirby.sprite.body) return false;
-            return kirby.sprite.body.velocity.x > 0.1;
+            return kirby.sprite.body.velocity.x > 0.3;
         }
         let left = inputs => {
             if (!kirby || !kirby.sprite || !kirby.sprite.body) return false;
-            return kirby.sprite.body.velocity.x < -0.1;
+            return kirby.sprite.body.velocity.x < -0.3;
         }
+        let up = this.pressed("UP")
+        let upLeft = this.and(up, () => this.kirby.jumpControl === 'left')
+        let upRight = this.and(up, () => this.kirby.jumpControl === 'right')
+
         let down = inputs => false;
 
         let rollRight = this.and(down, right);
@@ -69,6 +73,11 @@ class KirbyMovementController extends MovementController {
         )
 
         this.registerInputCombination(
+            upRight,
+            () => Body.applyForce(this.kirby.sprite.body, this.kirby.sprite.body.position, Vector.create(0.01, 0.005))
+        )
+
+        this.registerInputCombination(
             idle,
             () => {
                 switch (this.lastDirection) {
@@ -85,7 +94,9 @@ class KirbyMovementController extends MovementController {
 
 
     pressed(input) {
-        return inputs => inputs.get(input)
+        return inputs => {
+            return inputs.get(input)
+        }
     }
 
     or(func1, func2) {
@@ -111,6 +122,13 @@ export default class Kirby extends Entity {
 
     createSprite() {
         let kirbySprite = new class extends Sprite {
+            setMassCentre(body, offset) {
+                body.position.x += offset.x;
+                body.position.y += offset.y;
+                body.positionPrev.x += offset.x;
+                body.positionPrev.y += offset.y;
+            }
+
             createBody(animation) {
                 let body = super.createBody(animation);
                 body.plugin.attractors = [
@@ -119,7 +137,7 @@ export default class Kirby extends Entity {
                             var vw = windowWidth / 100;
                             var vh = windowHeight / 100;
                             // use Newton's law of gravitation
-                            var bToA = Matter.Vector.sub(bodyB.position, bodyA.position),
+                            var bToA = Matter.Vector.sub(bodyB.positionPrev, bodyA.positionPrev),
                                 distanceSq = Matter.Vector.magnitudeSquared(bToA) || 0.001;
                             distanceSq /= 600;
                             var normal = Matter.Vector.normalise(bToA),
@@ -128,21 +146,20 @@ export default class Kirby extends Entity {
                             force.x /= vw / 16;
                             force.y /= vw / 16;
                             // to apply forces to both bodies
-                            Body.applyForce(bodyA, bodyA.position, Matter.Vector.neg(force));
-                            Body.applyForce(bodyB, bodyB.position, force);
+                            Body.applyForce(bodyA, bodyA.positionPrev, Matter.Vector.neg(force));
+                            Body.applyForce(bodyB, bodyB.positionPrev, force);
                         }
                     }
                 ]
-
+                this.setMassCentre(body, Vector.create(0, 20));
                 return body;
             }
         }(loadJSON("assets/sprites/kirby.json"), {
-            mass: 1,
+            mass: 0.5,
             position: {
                 x: 1200,
                 y: 200
             },
-            inertia: Infinity,
             restitution: 0.3
         });
         kirbySprite.setAnimation("idle-right")
@@ -167,6 +184,35 @@ export default class Kirby extends Entity {
         if (this.movementController) {
             this.movementController.updateInputs();
         }
+
+        if (!this.jumpControl) {
+
+            let strongestForce = Vector.create(0, 0)
+            environment.engine.world.bodies.forEach(body => {
+                let calculated = this.calculateForce(body);
+                if (Vector.magnitudeSquared(calculated) > Vector.magnitudeSquared(strongestForce)) {
+                    strongestForce = calculated;
+                }
+            })
+            strongestForce = Vector.normalise(strongestForce)
+
+            if (!this.sprite || !this.sprite.body) return;
+            // this.sprite.body.position.x = mouseX
+            // this.sprite.body.position.y = mouseY
+            let angle = 2 * Vector.angle(strongestForce, Vector.create(0, 1))
+            if (angle < 0) {
+                angle += Math.PI
+            }
+            this.sprite.body.angle = angle + Math.PI
+        } else {
+            this.sprite.body.angle = 0
+            this.sprite.body.inertia = Infinity
+        }
+    }
+
+
+    draw() {
+        super.draw();
     }
 
     calculateForce(bodyB) {
@@ -179,7 +225,7 @@ export default class Kirby extends Entity {
             var vw = windowWidth / 100;
             var vh = windowHeight / 100;
             // use Newton's law of gravitation
-            var bToA = Matter.Vector.sub(bodyB.position, bodyA.position),
+            var bToA = Matter.Vector.sub(bodyB.positionPrev, bodyA.positionPrev),
                 distanceSq = Matter.Vector.magnitudeSquared(bToA) || 0.001;
             distanceSq /= 600;
             var normal = Matter.Vector.normalise(bToA),
@@ -190,9 +236,14 @@ export default class Kirby extends Entity {
             // to apply forces to both bodies
             result.x += force.x;
             result.y += force.y;
-            // Body.applyForce(bodyA, bodyA.position, Matter.Vector.neg(force));
-            // Body.applyForce(bodyB, bodyB.position, force);
+            // Body.applyForce(bodyA, bodyA.positionPrev, Matter.Vector.neg(force));
+            // Body.applyForce(bodyB, bodyB.positionPrev, force);
         }
         return result;
+    }
+
+    setJumpControl(direction) {
+        console.log("SET JUMP")
+        this.jumpControl = direction;
     }
 }

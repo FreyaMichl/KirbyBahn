@@ -8,6 +8,7 @@ import Tomato from "../entity/interactionElements/tomato.js";
 import Tree from "../entity/interactionElements/tree.js";
 import Magnet from "../entity/interactionElements/magnet.js";
 import Crystal from "../entity/interactionElements/crystal.js";
+import Collision from "../entity/interactionElements/collision.js";
 
 class SpaceScene extends Scene {
 
@@ -28,6 +29,16 @@ class SpaceScene extends Scene {
         this.crystal1Right = new Crystal("one_right", 60);
         this.crystal2Left = new Crystal("two_left", 120);
         this.crystal2Right = new Crystal("two_right", 200);
+        this.collision = new Collision(600, 1630, 300, 20, -0.628319,
+            () => this.kirby.sprite.body,
+            () => {
+            this.planet1.sprite.body.mass = 0.00000000000001
+            this.planet2.sprite.body.mass = 0.00000000000001
+            environment.engine.world.gravity.scale = 0.00016
+            this.kirby.setJumpControl("right")
+            this.kirby.sprite.body.friction = 0
+
+        });
         this.addEntity(this.planet1);
         this.addEntity(this.planet2);
         this.addEntity(this.spaceship);
@@ -43,6 +54,7 @@ class SpaceScene extends Scene {
         this.addEntity(this.crystal1Right);
         this.addEntity(this.crystal2Left);
         this.addEntity(this.crystal2Right);
+        this.addEntity(this.collision);
         this.createBridge();
     }
 
@@ -85,7 +97,7 @@ class SpaceScene extends Scene {
                         bodyB: parts[0].sprite.body,
                         pointA: {
                             x: 320,
-                            y: 2130,
+                            y: 2230,
                             length: 100,
                             stiffness: 0.4,
                             restitution: 1,
@@ -133,13 +145,19 @@ class SpaceScene extends Scene {
         let page = Math.floor((body.position.y + 60) / windowHeight);
         if (keyIsDown(32)) {
             if (Matter.SAT.collides(this.planet1.sprite.body, body).collided) {
-                Body.applyForce(body, body.position, Vector.mult(Vector.normalise(Vector.sub(this.planet2.sprite.body.position, body.position)), 0.02))
+                Body.applyForce(body, body.position, Vector.mult(Vector.normalise(Vector.sub(this.planet2.sprite.body.position, body.position)), 0.01))
             }
             if (Matter.SAT.collides(this.planet2.sprite.body, body).collided) {
-                Body.applyForce(body, body.position, Vector.mult(Vector.normalise(Vector.sub(Vector.add(this.spaceship.sprite.body.position, Vector.create(300, 0)), body.position)), 0.02))
+                Body.applyForce(body, body.position, Vector.mult(Vector.normalise(Vector.sub(Vector.add(this.spaceship.sprite.body.position, Vector.create(-300, 0)), body.position)), 0.02))
             }
         }
+        if(body.velocity.y < 0){
+            this.collision.sprite.body.collisionFilter.category = 1
+        }else{
+            this.collision.sprite.body.collisionFilter.category = 0
+        }
         environment.scrollToPage(page);
+
     }
 
 
