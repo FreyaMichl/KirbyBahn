@@ -11,15 +11,17 @@ class KirbyMovementController extends MovementController {
         this.lastDirection = Input.RIGHT;
         let right = inputs => {
             if (!kirby || !kirby.sprite || !kirby.sprite.body) return false;
-            return kirby.sprite.body.velocity.x > 0.3;
+            return kirby.sprite.body.velocity.x > 1.2;
         }
         let left = inputs => {
             if (!kirby || !kirby.sprite || !kirby.sprite.body) return false;
-            return kirby.sprite.body.velocity.x < -0.3;
+            return kirby.sprite.body.velocity.x < -1.2;
         }
         let up = this.pressed("UP")
-        let upLeft = this.and(up, () => this.kirby.jumpControl === 'left')
-        let upRight = this.and(up, () => this.kirby.jumpControl === 'right')
+        let downLeft = this.and(up, () => this.kirby.jumpControl === 'left-down')
+        let downRight = this.and(up, () => this.kirby.jumpControl === 'right-down')
+        let upLeft = this.and(up, () => this.kirby.jumpControl === 'left-up')
+        let upRight = this.and(up, () => this.kirby.jumpControl === 'right-up')
 
         let down = inputs => false;
 
@@ -73,8 +75,23 @@ class KirbyMovementController extends MovementController {
         )
 
         this.registerInputCombination(
-            upRight,
+            downRight,
             () => Body.applyForce(this.kirby.sprite.body, this.kirby.sprite.body.position, Vector.create(0.01, 0.005))
+        )
+
+        this.registerInputCombination(
+            downLeft,
+            () => Body.applyForce(this.kirby.sprite.body, this.kirby.sprite.body.position, Vector.create(-0.01, 0.005))
+        )
+
+        this.registerInputCombination(
+            upLeft,
+            () => Body.applyForce(this.kirby.sprite.body, this.kirby.sprite.body.position, Vector.create(-0.01, -0.007))
+        )
+
+        this.registerInputCombination(
+            upRight,
+            () => Body.applyForce(this.kirby.sprite.body, this.kirby.sprite.body.position, Vector.create(0.01, -0.005))
         )
 
         this.registerInputCombination(
@@ -122,13 +139,6 @@ export default class Kirby extends Entity {
 
     createSprite() {
         let kirbySprite = new class extends Sprite {
-            setMassCentre(body, offset) {
-                body.position.x += offset.x;
-                body.position.y += offset.y;
-                body.positionPrev.x += offset.x;
-                body.positionPrev.y += offset.y;
-            }
-
             createBody(animation) {
                 let body = super.createBody(animation);
                 body.plugin.attractors = [
@@ -151,14 +161,13 @@ export default class Kirby extends Entity {
                         }
                     }
                 ]
-                this.setMassCentre(body, Vector.create(0, 20));
                 return body;
             }
         }(loadJSON("assets/sprites/kirby.json"), {
             mass: 0.5,
             position: {
                 x: 1200,
-                y: 200
+                y: 400
             },
             restitution: 0.3
         });
@@ -225,7 +234,7 @@ export default class Kirby extends Entity {
             var vw = windowWidth / 100;
             var vh = windowHeight / 100;
             // use Newton's law of gravitation
-            var bToA = Matter.Vector.sub(bodyB.positionPrev, bodyA.positionPrev),
+            var bToA = Matter.Vector.sub(bodyB.position, bodyA.position),
                 distanceSq = Matter.Vector.magnitudeSquared(bToA) || 0.001;
             distanceSq /= 600;
             var normal = Matter.Vector.normalise(bToA),
@@ -243,7 +252,6 @@ export default class Kirby extends Entity {
     }
 
     setJumpControl(direction) {
-        console.log("SET JUMP")
         this.jumpControl = direction;
     }
 }

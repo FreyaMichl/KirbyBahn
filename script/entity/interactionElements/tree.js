@@ -18,7 +18,7 @@ class TreeSprite extends SimpleSprite {
       this.sizeX,
       this.sizeY, {
         isStatic: true,
-        mass: 0.1,
+        mass: 0.0000001,
         restitution: 1,
       });
     return body;

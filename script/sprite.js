@@ -1,3 +1,5 @@
+import environment from "./environment.js";
+
 export default class Sprite {
 
     constructor(animations, options) {
@@ -14,7 +16,6 @@ export default class Sprite {
     }
 
     createBody(animation) {
-
         let body = Bodies
             .fromVertices(
                 200,
@@ -115,6 +116,7 @@ export default class Sprite {
 
             loadImage(targetFrame.texture, result => {
                 targetFrame.loadedTexture = result.get(targetFrame.textureOffsetX, targetFrame.textureOffsetY, targetFrame.textureWidth, targetFrame.textureHeight);
+                environment.canvas.getTexture(result).setInterpolation(NEAREST, NEAREST)
             });
         }
         return !!targetFrame.loadedTexture;
@@ -172,6 +174,7 @@ export class SimpleSprite {
         if (!texture) return;
         loadImage(texture, finalTexture => {
             this.texture = finalTexture;
+            environment.canvas.getTexture(finalTexture).setInterpolation(NEAREST, NEAREST)
         })
     }
 
@@ -194,12 +197,17 @@ export class SimpleSprite {
     }
 
     drawVertices() {
+        if (this.body.draw === false) {
+            return
+        }
         beginShape();
         if (!this.texture) {
             this.body.vertices.forEach(bodyVertex => {
                 vertex(bodyVertex.x, bodyVertex.y);
             });
         } else {
+            fill('black')
+
             texture(this.texture);
             textureMode(NORMAL)
 

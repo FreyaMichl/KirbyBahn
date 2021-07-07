@@ -27,6 +27,10 @@ export default class Collision extends Entity {
                     }
                 });
             }
+            draw() {
+                // fill('black')
+                super.draw();
+            }
         }()
     }
 

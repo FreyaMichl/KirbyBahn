@@ -10,6 +10,7 @@ import Magnet from "../entity/interactionElements/magnet.js";
 import Crystal from "../entity/interactionElements/crystal.js";
 import Collision from "../entity/interactionElements/collision.js";
 import Portal from "../entity/interactionElements/portal.js";
+import environment from "../environment.js";
 
 class SpaceScene extends Scene {
 
@@ -17,47 +18,66 @@ class SpaceScene extends Scene {
         super();
         this.tomato1 = new Tomato("assets/textures/interactionElements/tomato.png", 530, 2830);
         this.tomato2 = new Tomato("assets/textures/interactionElements/tomato.png", 750, 2855);
-        this.treelittle = new Tree("assets/textures/interactionElements/tree_little.png", 100, 100, 33, 60)
-        this.treemiddle = new Tree("assets/textures/interactionElements/tree_middle.png", 200, 100, 44, 77)
-        this.treebig = new Tree("assets/textures/interactionElements/tree_big.png", 300, 100, 53, 94)
+        this.treelittle = new Tree("assets/textures/interactionElements/tree_little.png", 1390, 3460, 33 * 3, 60 * 3)
+        this.treemiddle = new Tree("assets/textures/interactionElements/tree_middle.png", 1310, 3435, 44 * 3, 77 * 3)
+        this.treebig = new Tree("assets/textures/interactionElements/tree_big.png", 1200, 3410, 53 * 3, 94 * 3)
         this.interior = new Interior();
-        this.spaceship = new Spaceship();
+        this.spaceshipLeft = new Spaceship("left", -415, 178);
+        this.spaceshipRight = new Spaceship("right", 380, 110);
         this.kirby = new Kirby();
         this.planet1 = new Planet("assets/textures/interactionElements/planet.png", 1500, 400, 250);
-        this.planet2 = new Planet("assets/textures/interactionElements/earth_planet.png", 400, 700, 200);
+        this.planet2 = new Planet("assets/textures/interactionElements/earth_planet.png", 300, 700, 200);
         this.magnet = new Magnet();
         this.crystal1Left = new Crystal("one_left", 0);
         this.crystal1Right = new Crystal("one_right", 60);
         this.crystal2Left = new Crystal("two_left", 120);
         this.crystal2Right = new Crystal("two_right", 200);
         this.portal = new Portal("assets/textures/interactionElements/portal.png", 890, 5200)
-        this.collision = new Collision(600, 1630, 300, 20, -0.628319,
+        this.entryCollision = new Collision(600, 1630, 300, 20, -0.628319,
             () => this.kirby.sprite.body,
             () => {
                 this.planet1.sprite.body.mass = 0.00000000000001
                 this.planet2.sprite.body.mass = 0.00000000000001
                 environment.engine.world.gravity.scale = 0.00016
-                this.kirby.setJumpControl("right")
+                this.kirby.setJumpControl("right-down")
                 this.kirby.sprite.body.friction = 0
 
             });
+        this.magnetCollision = new Collision(1075 - 10 - 5 - 10, 2000, 550 - 20 - 10 - 20, 300, 0, () => this.kirby.sprite.body, () => {
+            this.magnet.awaitKirby();
+        })
+        this.cafeteriaEnterCollision = new Collision(400 , 2500, 150, 50, 0, () => this.kirby.sprite.body, () => {
+            this.kirby.setJumpControl("right-down")
+        })
+        this.magnetStopCollision = new Collision(1390 + 15, 2000, 90, 300, 0, () => this.kirby.sprite.body, () => {
+            this.magnet.dropKirby();
+            this.kirby.setJumpControl("left-down")
+        })
+        this.treeCollision = new Collision(1410, 3250, 120, 100, 0, () => this.kirby.sprite.body, () => {
+            this.kirby.setJumpControl("left-up")
+        })
         this.addEntity(this.planet1);
         this.addEntity(this.planet2);
-        this.addEntity(this.spaceship);
+        this.addEntity(this.spaceshipLeft);
+        this.addEntity(this.spaceshipRight);
         this.addEntity(this.interior);
         this.addEntity(this.kirby);
         this.addEntity(this.tomato1);
         this.addEntity(this.tomato2);
         this.addEntity(this.treelittle);
-        this.addEntity(this.treemiddle);
         this.addEntity(this.treebig);
+        this.addEntity(this.treemiddle);
         this.addEntity(this.magnet);
         this.addEntity(this.crystal1Left);
         this.addEntity(this.crystal1Right);
         this.addEntity(this.crystal2Left);
         this.addEntity(this.crystal2Right);
-        this.addEntity(this.collision);
+        this.addEntity(this.entryCollision);
         this.addEntity(this.portal);
+        this.addEntity(this.magnetCollision);
+        this.addEntity(this.magnetStopCollision);
+        this.addEntity(this.cafeteriaEnterCollision);
+        this.addEntity(this.treeCollision);
         this.createBridge();
     }
 
@@ -89,9 +109,9 @@ class SpaceScene extends Scene {
                                 x: -10.5,
                                 y: 0
                             },
-                            restitution: 1,
-                            stiffness: 0.4,
-                            damping: 0.0,
+                            restitution: 0,
+                            stiffness: 0.22,
+                            damping: 1,
                             length: 2
                         }))
                     }
@@ -151,13 +171,13 @@ class SpaceScene extends Scene {
                 Body.applyForce(body, body.position, Vector.mult(Vector.normalise(Vector.sub(this.planet2.sprite.body.position, body.position)), 0.01))
             }
             if (Matter.SAT.collides(this.planet2.sprite.body, body).collided) {
-                Body.applyForce(body, body.position, Vector.mult(Vector.normalise(Vector.sub(Vector.add(this.spaceship.sprite.body.position, Vector.create(-300, 0)), body.position)), 0.02))
+                Body.applyForce(body, body.position, Vector.mult(Vector.normalise(Vector.sub(Vector.add(this.spaceshipLeft.sprite.body.position, Vector.create(300, 0)), body.position)), 0.02))
             }
         }
-        if(body.velocity.y < 0){
-            this.collision.sprite.body.collisionFilter.category = 1
-        }else{
-            this.collision.sprite.body.collisionFilter.category = 0
+        if (body.velocity.y < 0) {
+            this.entryCollision.sprite.body.collisionFilter.category = 1
+        } else {
+            this.entryCollision.sprite.body.collisionFilter.category = 0
         }
         environment.scrollToPage(page);
 
@@ -169,11 +189,22 @@ class SpaceScene extends Scene {
             result => {
                 this.background.resize(this.background.width, this.background.height);
             });
+        this.actualOutline = loadImage("assets/textures/spaceship/spaceship_outline-2.png")
         this.entities.forEach(entity => entity.preload())
     }
 
     draw() {
+        environment.canvas.getTexture(this.background).setInterpolation(NEAREST, NEAREST)
+        environment.canvas.getTexture(this.actualOutline).setInterpolation(NEAREST, NEAREST)
+
         image(this.background, 0, 0);
+
+        if (this.spaceshipLeft.sprite && this.spaceshipLeft.sprite.body) {
+            let width = 648 * 2;
+            let height = 1841 * 2;
+            image(this.actualOutline, this.spaceshipLeft.sprite.body.position.x - width / 2 + 423, this.spaceshipLeft.sprite.body.position.y - height / 2 - 165, width, height)
+        }
+
         super.draw()
         this.entities.forEach(entity => {
             entity.draw()

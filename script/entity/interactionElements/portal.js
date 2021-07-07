@@ -18,7 +18,10 @@ class PortalSprite extends SimpleSprite {
         isStatic: true,
         mass: 10,
         restitution: 0.7,
-      });
+          collisionFilter:{
+            category: 0
+          }
+        });
     return body;
   }
   draw() {

@@ -1,5 +1,6 @@
 import Entity from "../entity.js";
 import Sprite from "../sprite.js";
+import environment from "../environment.js";
 
 export default class Interior extends Entity {
 
@@ -24,7 +25,20 @@ export default class Interior extends Entity {
     this.actualOutline = loadImage("assets/textures/interiorSpaceship/whole_interior.png")
   }
 
+
+  afterTick() {
+     super.afterTick();
+     if(!this.sprite || !this.sprite.body)return
+    if(environment.scene.kirby.sprite && environment.scene.kirby.sprite.body && environment.scene.kirby.sprite.body.position.y > 4427){
+      this.sprite.body.collisionFilter.category = 0
+    }else{
+      this.sprite.body.collisionFilter.category = 1
+    }
+  }
+
   draw() {
+    environment.canvas.getTexture(this.actualOutline).setInterpolation(NEAREST, NEAREST)
+
     super.draw();
     if (this.sprite.body) {
           let width = this.sprite.body.bounds.max.x - this.sprite.body.bounds.min.x+100;

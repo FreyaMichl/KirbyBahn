@@ -4266,7 +4266,7 @@ var Contact = __webpack_require__(17);
     /**
      * Creates a pair.
      * @method create
-     * @param {collision} collision
+     * @param {entryCollision} collision
      * @param {number} timestamp
      * @return {pair} A new pair
      */
@@ -4304,7 +4304,7 @@ var Contact = __webpack_require__(17);
      * Updates a pair given a collision.
      * @method update
      * @param {pair} pair
-     * @param {collision} collision
+     * @param {entryCollision} collision
      * @param {number} timestamp
      */
     Pair.update = function(pair, collision, timestamp) {
@@ -5141,8 +5141,8 @@ var Vector = __webpack_require__(2);
      * @method collides
      * @param {body} bodyA
      * @param {body} bodyB
-     * @param {collision} previousCollision
-     * @return {collision} collision
+     * @param {entryCollision} previousCollision
+     * @return {entryCollision} collision
      */
     SAT.collides = function(bodyA, bodyB, previousCollision) {
         var overlapAB,
@@ -8583,7 +8583,7 @@ var Common = __webpack_require__(0);
      * Updates pairs given a list of collisions.
      * @method update
      * @param {object} pairs
-     * @param {collision[]} collisions
+     * @param {entryCollision[]} collisions
      * @param {number} timestamp
      */
     Pairs.update = function(pairs, collisions, timestamp) {
