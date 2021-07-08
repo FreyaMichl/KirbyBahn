@@ -45,7 +45,7 @@ export default class Crystal extends Entity {
       if (!this.damageSound.isPlaying()) {
         this.damageSound.play();
       }
-      Body.applyForce(environment.scene.kirby.sprite.body, environment.scene.kirby.sprite.body.position, Vector.create(-0.02, -0.003));
+      Body.applyForce(environment.scene.kirby.sprite.body, environment.scene.kirby.sprite.body.position, Vector.create(-0.002, -0.002));
     }
   }
 }
