@@ -216,7 +216,7 @@ class SpaceScene extends Scene {
 
     this.music = loadSound("assets/audio/background-music.m4a", result => {
       result.playMode("restart");
-      result.setVolume(0.5);
+      result.setVolume(0.3);
       result.play();
     });
   }
