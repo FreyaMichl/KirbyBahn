@@ -209,7 +209,7 @@ class SpaceScene extends Scene {
       result => {
         this.background.resize(this.background.width, this.background.height);
       });
-    this.tapSpace = loadImage("assets/textures/tapSpace.png");
+    this.tapSpace = loadImage("assets/textures/TapSpace.png");
     this.actualOutline = loadImage("assets/textures/spaceship/spaceship_outline-2.png")
 
     this.entities.forEach(entity => entity.preload())
