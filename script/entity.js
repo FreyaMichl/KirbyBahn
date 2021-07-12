@@ -1,7 +1,8 @@
+//this class is for all entities it contains all the needed functions to generate one
 export default class Entity {
 
   draw() {
-    this.ensureSpriteExists() ;
+    this.ensureSpriteExists();
     this.sprite.draw()
   }
 
@@ -11,8 +12,7 @@ export default class Entity {
     }
   }
 
-  preload(){
-  }
+  preload() {}
 
   afterTick() {
     if (!this.sprite) {

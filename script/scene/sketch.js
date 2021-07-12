@@ -1,3 +1,5 @@
+//This was the first js we used for the Urbybahn but now it isn't used anymore
+
 Matter.use('matter-wrap');
 Matter.use('matter-attractors');
 
@@ -11,10 +13,10 @@ const Engine = Matter.Engine,
   Mouse = Matter.Mouse,
   Common = Matter.Common,
   Bodies = Matter.Bodies;
-  MouseConstraint = Matter.MouseConstraint;
-  Constraint = Matter.Constraint;
-  Composites = Matter.Composites;
-  Composite = Matter.Composite;
+MouseConstraint = Matter.MouseConstraint;
+Constraint = Matter.Constraint;
+Composites = Matter.Composites;
+Composite = Matter.Composite;
 
 const drawVertices = Helpers.drawVertices;
 
@@ -103,30 +105,48 @@ function setup() {
   //add bridge
   const group = Body.nextGroup(true);
   //both x, both y, columns, rows, columnGap, rowGap, callback funktion
-  const rects = Composites.stack(200, 100, 10, 1, 10, 10, function(x, y){
+  const rects = Composites.stack(200, 100, 10, 1, 10, 10, function(x, y) {
     // x (is filled at composite.add), y (""), length, width,
-    return Bodies.rectangle(x, y, 100, 50 /*,{ collisionFilter:{ group : group }}*/);
+    return Bodies.rectangle(x, y, 100, 50 /*,{ collisionFilter:{ group : group }}*/ );
   });
   //chains, xOffsetA, yOffsetA, xOffsetB, yOffsetB, options(stiffness - hoch steif)
-  bridge = Composites.chain(rects, 0.5, 0, -0.5, 0, {stiffness: 0.08, length: 2, render: {type: 'line'}});
+  bridge = Composites.chain(rects, 0.5, 0, -0.5, 0, {
+    stiffness: 0.08,
+    length: 2,
+    render: {
+      type: 'line'
+    }
+  });
   World.add(engine.world, [bridge]);
 
   // left and right fix point of bridge
   //left point of bridge
   Composite.add(rects, Constraint.create({
-    pointA: {x: 300, y: 300},
+    pointA: {
+      x: 300,
+      y: 300
+    },
     bodyB: rects.bodies[0],
     //constrain im rect
-    pointB: {x: -50, y: 0},
+    pointB: {
+      x: -50,
+      y: 0
+    },
     stiffness: 0,
     length: 100
   }));
   //right point of bridge
   Composite.add(rects, Constraint.create({
-    pointA: {x: 1000, y: 300},
-    bodyB: rects.bodies[rects.bodies.length-1],
+    pointA: {
+      x: 1000,
+      y: 300
+    },
+    bodyB: rects.bodies[rects.bodies.length - 1],
     //constrain im rect
-    pointB: {x: +50, y: 0},
+    pointB: {
+      x: +50,
+      y: 0
+    },
     stiffness: 0,
     length: 200
   }));
@@ -202,12 +222,18 @@ function drawBodies(bodies) {
 
 function drawConstraint(constraint) {
   const offsetA = constraint.pointA;
-  let posA = {x:0, y:0};
+  let posA = {
+    x: 0,
+    y: 0
+  };
   if (constraint.bodyA) {
     posA = constraint.bodyA.position;
   }
   const offsetB = constraint.pointB;
-  let posB = {x:0, y:0};
+  let posB = {
+    x: 0,
+    y: 0
+  };
   if (constraint.bodyB) {
     posB = constraint.bodyB.position;
   }

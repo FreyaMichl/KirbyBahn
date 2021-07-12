@@ -1,3 +1,6 @@
+//in this Scene we fuse all the Entities together
+//it contains the aftertick, preload and draw functions used for our Urbybahn
+
 import Scene from "../scene.js";
 import Kirby from "../entity/kirby.js";
 import Planet from "../entity/planet.js";
@@ -15,6 +18,7 @@ import environment from "../environment.js";
 
 class SpaceScene extends Scene {
 
+  //generate entities
   constructor() {
     super();
     this.tomato1 = new Tomato("assets/textures/interactionElements/tomato.png", 530, 2830);
@@ -67,6 +71,7 @@ class SpaceScene extends Scene {
     this.bladeEntryCollision = new Collision(630, 3840, 120, 100, 0, () => this.kirby.sprite.body, () => {
       this.kirby.setJumpControl("center-up")
     })
+    //add entities to the scene
     this.addEntity(this.planet1);
     this.addEntity(this.planet2);
     this.addEntity(this.spaceshipLeft);
@@ -100,6 +105,7 @@ class SpaceScene extends Scene {
     this.createBridge();
   }
 
+  //generating the bridge with it's constraints and parts
   createBridge() {
     let parts = []
     for (let i = 0; i < 20; i++) {
@@ -117,6 +123,7 @@ class SpaceScene extends Scene {
           for (let j = 0; j < parts.length - 1; j++) {
             let bodyA = parts[j].sprite.body;
             let bodyB = parts[j + 1].sprite.body;
+            //constraints between the parts of the bridge
             Matter.World.add(environment.engine.world, Matter.Constraint.create({
               bodyA: bodyA,
               pointA: {
@@ -135,6 +142,7 @@ class SpaceScene extends Scene {
             }))
           }
 
+          //the first constraint
           Matter.World.add(environment.engine.world, Matter.Constraint.create({
             bodyB: parts[0].sprite.body,
             pointA: {
@@ -152,6 +160,7 @@ class SpaceScene extends Scene {
             stiffness: 1,
             length: 2
           }))
+          //the last constraint
           Matter.World.add(environment.engine.world, Matter.Constraint.create({
             bodyB: parts[parts.length - 1].sprite.body,
             pointA: {
@@ -221,6 +230,7 @@ class SpaceScene extends Scene {
     });
   }
 
+  //draw the scene
   draw() {
     environment.canvas.getTexture(this.background).setInterpolation(NEAREST, NEAREST)
     environment.canvas.getTexture(this.actualOutline).setInterpolation(NEAREST, NEAREST)
@@ -235,36 +245,11 @@ class SpaceScene extends Scene {
       image(this.actualOutline, this.spaceshipLeft.sprite.body.position.x - width / 2 + 423, this.spaceshipLeft.sprite.body.position.y - height / 2 - 165, width, height)
     }
 
+    //draw all entities
     super.draw()
     this.entities.forEach(entity => {
       entity.draw()
     });
-    environment.engine.world.constraints.forEach(constraint => {
-      const offsetA = constraint.pointA;
-      let posA = {
-        x: 0,
-        y: 0
-      };
-      if (constraint.bodyA) {
-        posA = constraint.bodyA.position;
-      }
-      const offsetB = constraint.pointB;
-      let posB = {
-        x: 0,
-        y: 0
-      };
-      if (constraint.bodyB) {
-        posB = constraint.bodyB.position;
-      }
-      stroke(255);
-
-      line(
-        posA.x + offsetA.x,
-        posA.y + offsetA.y,
-        posB.x + offsetB.x,
-        posB.y + offsetB.y
-      );
-    })
   }
 
 

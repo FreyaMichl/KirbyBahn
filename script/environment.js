@@ -1,3 +1,4 @@
+//this is the most important file the environment is the first js that opens and it contains the setup function als well as the preload of a new Environment
 class Environment {
 
   engine;

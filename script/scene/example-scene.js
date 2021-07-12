@@ -1,3 +1,4 @@
+//test Scene
 import Scene from "../scene.js";
 import Kirby from "../entity/kirby.js";
 
