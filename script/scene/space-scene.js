@@ -23,6 +23,8 @@ class SpaceScene extends Scene {
         this.interior = new Interior();
         this.spaceshipLeft = new Spaceship("left", -415, 178);
         this.spaceshipRight = new Spaceship("right", 380, 110);
+        this.portalAnimated = new Portal("assets/textures/interactionElements/portal.png", 890, 5200, true)
+        this.portal = new Portal("assets/textures/interactionElements/portal.png", 890, 5200, false)
         this.kirby = new Kirby();
         this.planet1 = new Planet("assets/textures/interactionElements/planet.png", 1500, 400, 250);
         this.planet2 = new Planet("assets/textures/interactionElements/earth_planet.png", 300, 700, 200);
@@ -31,7 +33,6 @@ class SpaceScene extends Scene {
         this.crystal1Right = new Crystal("one_right", 60);
         this.crystal2Left = new Crystal("two_left", 120);
         this.crystal2Right = new Crystal("two_right", 200);
-        this.portal = new Portal("assets/textures/interactionElements/portal.png", 890, 5200)
         this.rotor1 = new Rotor("assets/textures/interactionElements/motor_blade.png", 640, 4088, 0.07);
         this.rotor2 = new Rotor("assets/textures/interactionElements/motor_blade.png", 915, 3952, -0.07);
         this.rotor3 = new Rotor("assets/textures/interactionElements/motor_blade.png", 778, 4228, 0.07);
@@ -67,7 +68,9 @@ class SpaceScene extends Scene {
         this.addEntity(this.spaceshipLeft);
         this.addEntity(this.spaceshipRight);
         this.addEntity(this.interior);
+        this.addEntity(this.portal);
         this.addEntity(this.kirby);
+        this.addEntity(this.portalAnimated);
         this.addEntity(this.tomato1);
         this.addEntity(this.tomato2);
         this.addEntity(this.trees);
@@ -77,7 +80,6 @@ class SpaceScene extends Scene {
         this.addEntity(this.crystal2Left);
         this.addEntity(this.crystal2Right);
         this.addEntity(this.entryCollision);
-        this.addEntity(this.portal);
         this.addEntity(this.magnetCollision);
         this.addEntity(this.magnetStopCollision);
         this.addEntity(this.cafeteriaEnterCollision);
@@ -216,6 +218,7 @@ class SpaceScene extends Scene {
 
         super.draw()
         this.entities.forEach(entity => {
+            tint(255, 255);
             entity.draw()
         });
         environment.engine.world.constraints.forEach(constraint => {

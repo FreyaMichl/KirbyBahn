@@ -212,6 +212,9 @@ export class SimpleSprite {
             let max = this.body.bounds.max;
             let min = this.body.bounds.min;
 
+            if(typeof this.body.alpha !== 'undefined'){
+                tint(255, this.body.alpha);
+            }
             let bodyWidth = max.x - min.x;
             let bodyHeight = max.y - min.y;
             this.body.vertices.forEach(bodyVertex => {
