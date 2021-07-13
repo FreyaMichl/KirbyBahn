@@ -1,5 +1,6 @@
 import environment from "./environment.js";
 
+//this Class can be used to build Scenes
 export default class Scene {
 
   constructor() {

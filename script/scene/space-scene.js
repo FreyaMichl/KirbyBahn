@@ -1,3 +1,6 @@
+//in this Scene we fuse all the Entities together
+//it contains the aftertick, preload and draw functions used for our Urbybahn
+
 import Scene from "../scene.js";
 import Kirby from "../entity/kirby.js";
 import Planet from "../entity/planet.js";
@@ -15,24 +18,30 @@ import environment from "../environment.js";
 
 class SpaceScene extends Scene {
 
+  //generate entities
   constructor() {
     super();
     this.tomato1 = new Tomato("assets/textures/interactionElements/tomato.png", 530, 2830);
     this.tomato2 = new Tomato("assets/textures/interactionElements/tomato.png", 750, 2855);
-    this.trees = new Tree(1330, 3470, 33 * 3, 60 * 3)
+    this.trees = new Tree(1265, 3429, 33 * 3, 60 * 3)
     this.interior = new Interior();
     this.spaceshipLeft = new Spaceship("left", -415, 178);
     this.spaceshipRight = new Spaceship("right", 380, 110);
     this.portalAnimated = new Portal("assets/textures/interactionElements/portal.png", 890, 5200, true)
     this.portal = new Portal("assets/textures/interactionElements/portal.png", 890, 5200, false)
     this.kirby = new Kirby();
-    this.planet1 = new Planet("assets/textures/interactionElements/planet.png", 1500, 400, 250);
-    this.planet2 = new Planet("assets/textures/interactionElements/earth_planet.png", 300, 700, 200);
+    this.planet1 = new Planet("assets/textures/interactionElements/planet.png", 1500, 600, 250);
+    this.planet2 = new Planet("assets/textures/interactionElements/earth_planet.png", 250, 900, 200);
     this.magnet = new Magnet();
-    this.crystal1Left = new Crystal("one_left", 0);
-    this.crystal1Right = new Crystal("one_right", 60);
-    this.crystal2Left = new Crystal("two_left", 120);
-    this.crystal2Right = new Crystal("two_right", 200);
+    this.crystal12Right = new Crystal("one_right", 5, 2110);
+    this.crystal123Right = new Crystal("one_right", 240, 2110);
+    this.crystal1Left = new Crystal("one_left", 0, 2110);
+    this.crystal12Left = new Crystal("one_left", 300, 2110);
+    this.crystal1Right = new Crystal("one_right", 60, 2110);
+    this.crystal2Left = new Crystal("two_left", 120, 2110);
+    this.crystal21Left = new Crystal("two_left", 380, 2110);
+    this.crystal2Right = new Crystal("two_right", 180, 2110);
+    this.crystal21Right = new Crystal("two_right", 130, 2090);
     this.rotor1 = new Rotor("assets/textures/interactionElements/motor_blade.png", 640, 4088, 0.07);
     this.rotor2 = new Rotor("assets/textures/interactionElements/motor_blade.png", 915, 3952, -0.07);
     this.rotor3 = new Rotor("assets/textures/interactionElements/motor_blade.png", 778, 4228, 0.07);
@@ -58,11 +67,12 @@ class SpaceScene extends Scene {
       this.kirby.setJumpControl("left-down")
     })
     this.treeCollision = new Collision(1410, 3400, 120, 100, 0, () => this.kirby.sprite.body, () => {
-      this.kirby.setJumpControl("left-down")
+      this.kirby.setJumpControl("left-up")
     })
     this.bladeEntryCollision = new Collision(630, 3840, 120, 100, 0, () => this.kirby.sprite.body, () => {
       this.kirby.setJumpControl("center-up")
     })
+    //add entities to the scene
     this.addEntity(this.planet1);
     this.addEntity(this.planet2);
     this.addEntity(this.spaceshipLeft);
@@ -75,9 +85,14 @@ class SpaceScene extends Scene {
     this.addEntity(this.tomato2);
     this.addEntity(this.trees);
     this.addEntity(this.magnet);
+    this.addEntity(this.crystal21Right);
+    this.addEntity(this.crystal12Right);
+    this.addEntity(this.crystal123Right);
     this.addEntity(this.crystal1Left);
+    this.addEntity(this.crystal12Left);
     this.addEntity(this.crystal1Right);
     this.addEntity(this.crystal2Left);
+    this.addEntity(this.crystal21Left);
     this.addEntity(this.crystal2Right);
     this.addEntity(this.entryCollision);
     this.addEntity(this.magnetCollision);
@@ -92,6 +107,7 @@ class SpaceScene extends Scene {
     this.createBridge();
   }
 
+  //generating the bridge with it's constraints and parts
   createBridge() {
     let parts = []
     for (let i = 0; i < 20; i++) {
@@ -109,6 +125,7 @@ class SpaceScene extends Scene {
           for (let j = 0; j < parts.length - 1; j++) {
             let bodyA = parts[j].sprite.body;
             let bodyB = parts[j + 1].sprite.body;
+            //constraints between the parts of the bridge
             Matter.World.add(environment.engine.world, Matter.Constraint.create({
               bodyA: bodyA,
               pointA: {
@@ -121,12 +138,13 @@ class SpaceScene extends Scene {
                 y: 0
               },
               restitution: 0,
-              stiffness: 0.22,
+              stiffness: 0.5,
               damping: 1,
               length: 2
             }))
           }
 
+          //the first constraint
           Matter.World.add(environment.engine.world, Matter.Constraint.create({
             bodyB: parts[0].sprite.body,
             pointA: {
@@ -144,6 +162,7 @@ class SpaceScene extends Scene {
             stiffness: 1,
             length: 2
           }))
+          //the last constraint
           Matter.World.add(environment.engine.world, Matter.Constraint.create({
             bodyB: parts[parts.length - 1].sprite.body,
             pointA: {
@@ -176,10 +195,10 @@ class SpaceScene extends Scene {
     if (!sprite) return;
     let body = sprite.body;
     if (!body) return;
-    let page = Math.floor((body.position.y + 60) / windowHeight);
+    let page = Math.floor((body.position.y - 300 + windowHeight) / windowHeight);
     if (keyIsDown(32)) {
       if (Matter.SAT.collides(this.planet1.sprite.body, body).collided) {
-        Body.applyForce(body, body.position, Vector.mult(Vector.normalise(Vector.sub(this.planet2.sprite.body.position, body.position)), 0.01))
+        Body.applyForce(body, body.position, Vector.mult(Vector.normalise(Vector.sub(Vector.add(this.planet2.sprite.body.position, Vector.create(0, -100)), body.position)), 0.01))
       }
       if (Matter.SAT.collides(this.planet2.sprite.body, body).collided) {
         Body.applyForce(body, body.position, Vector.mult(Vector.normalise(Vector.sub(Vector.add(this.spaceshipLeft.sprite.body.position, Vector.create(300, 0)), body.position)), 0.02))
@@ -196,19 +215,31 @@ class SpaceScene extends Scene {
 
 
   preload() {
+    getAudioContext().resume()
     this.background = loadImage("assets/textures/background.png",
       result => {
         this.background.resize(this.background.width, this.background.height);
       });
+    this.tapSpace = loadImage("assets/textures/TapSpace.png");
     this.actualOutline = loadImage("assets/textures/spaceship/spaceship_outline-2.png")
+
     this.entities.forEach(entity => entity.preload())
+
+    this.music = loadSound("assets/audio/background-music.m4a", result => {
+      result.playMode("restart");
+      result.setVolume(0.3);
+      result.play();
+    });
   }
 
+  //draw the scene
   draw() {
     environment.canvas.getTexture(this.background).setInterpolation(NEAREST, NEAREST)
     environment.canvas.getTexture(this.actualOutline).setInterpolation(NEAREST, NEAREST)
 
     image(this.background, 0, 0);
+    image(this.tapSpace, (windowWidth - this.tapSpace.width) / 2, 300);
+    translate(0, -300 + windowHeight);
 
     if (this.spaceshipLeft.sprite && this.spaceshipLeft.sprite.body) {
       let width = 648 * 2;
@@ -216,37 +247,12 @@ class SpaceScene extends Scene {
       image(this.actualOutline, this.spaceshipLeft.sprite.body.position.x - width / 2 + 423, this.spaceshipLeft.sprite.body.position.y - height / 2 - 165, width, height)
     }
 
+    //draw all entities
     super.draw()
     this.entities.forEach(entity => {
       tint(255, 255);
       entity.draw()
     });
-    environment.engine.world.constraints.forEach(constraint => {
-      const offsetA = constraint.pointA;
-      let posA = {
-        x: 0,
-        y: 0
-      };
-      if (constraint.bodyA) {
-        posA = constraint.bodyA.position;
-      }
-      const offsetB = constraint.pointB;
-      let posB = {
-        x: 0,
-        y: 0
-      };
-      if (constraint.bodyB) {
-        posB = constraint.bodyB.position;
-      }
-      stroke(255);
-
-      line(
-        posA.x + offsetA.x,
-        posA.y + offsetA.y,
-        posB.x + offsetB.x,
-        posB.y + offsetB.y
-      );
-    })
   }
 
 

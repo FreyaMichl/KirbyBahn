@@ -2,6 +2,7 @@ import Entity from "../entity.js";
 import Sprite from "../sprite.js";
 import environment from "../environment.js";
 
+//the spaceship function generates 2 halfs of the Spaceship because there are one entry and one exit and a body can't have two gaps
 export default class Spaceship extends Entity {
 
 

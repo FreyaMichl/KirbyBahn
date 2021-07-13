@@ -37,12 +37,27 @@ export default class Rotor extends Entity {
     }(this.texture, this.x, this.y, this.direction);
   }
 
+  preload() {
+    this.damageSound = loadSound("assets/audio/damage.mp3")
+    this.damageSound.playMode("sustain");
+  }
+
   afterTick() {
     if (!this?.sprite?.body) {
       return
     }
+
     Body.setAngle(this.sprite.body, this.angle);
     Body.setAngularVelocity(this.sprite.body, 0.15);
     this.angle += this.direction;
+
+    if (!environment.scene.kirby?.sprite?.body) {
+      return
+    }
+    if (Matter.SAT.collides(environment.scene.kirby.sprite.body, this.sprite.body).collided) {
+      if (!this.damageSound.isPlaying()) {
+        this.damageSound.play();
+      }
+    }
   }
 }

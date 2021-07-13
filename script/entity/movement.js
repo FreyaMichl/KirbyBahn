@@ -29,6 +29,7 @@ InputConstraints.set("RIGHT", leftRightConstraint)
 InputConstraints.set("UP", upDownConstraint)
 InputConstraints.set("DOWN", upDownConstraint)
 
+//this class is used to combine several input combinations. If the combination of pressed keys changes the matching callbacks are excuted
 export class MovementController {
 
   constructor() {
@@ -43,6 +44,7 @@ export class MovementController {
   }
 
   updateInputs() {
+    //set the status of all inputs
     Object.keys(Input).forEach(key => {
       this.setInput(key, Input[key]());
     })
@@ -54,12 +56,14 @@ export class MovementController {
   }
 
   validateInputs() {
+    //check if any input is active
     this.currentInputs.forEach((value, key) => {
       if (this.isPressed(key)) {
+        //checking if the inputs are valid
         InputConstraints.get(key).check(this);
       }
     })
-
+    //check if the active input combination is the same as the last one, if not set the active to the new one
     this.combinations.forEach((value, key) => {
       let result = key(this.currentInputs);
       if (result !== this.currentCombinationValues.get(key)) {
@@ -75,7 +79,7 @@ export class MovementController {
       }
     })
   }
-
+  //register callback to a specific combination
   registerInputCombination(combination, callback) {
     this.combinations.set(combination, callback);
   }

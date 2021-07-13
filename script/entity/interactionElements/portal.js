@@ -50,6 +50,9 @@ export default class Portal extends Entity {
     return new PortalSprite(this.texture, this.x, this.y, this.animated);
   }
 
+  preload() {
+    this.warpSound = loadSound("assets/audio/warp.mp3")
+  }
 
   afterTick() {
     if (this.animated) {
@@ -63,6 +66,10 @@ export default class Portal extends Entity {
           let interval = setInterval(() => {
             if (this.sprite.body.alpha >= 255) {
               clearInterval(interval);
+                if (!this.playedSound) {
+                    this.playedSound = true;
+                    this.warpSound.play();
+                }
             }
             this.sprite.body.alpha = Math.min(255, this.sprite.body.alpha * 1.003);
           }, 5)

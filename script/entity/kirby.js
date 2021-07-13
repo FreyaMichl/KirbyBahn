@@ -12,6 +12,8 @@ class KirbyMovementController extends MovementController {
     this.kirby = kirby;
 
     this.lastDirection = Input.RIGHT;
+
+    //define all needed combinations to animate the whole Urby. Basically this is a whole state machine
     let right = inputs => {
       if (!kirby || !kirby.sprite || !kirby.sprite.body) return false;
       return kirby.sprite.body.velocity.x > 1.2;
@@ -90,7 +92,7 @@ class KirbyMovementController extends MovementController {
 
     this.registerInputCombination(
       upLeft,
-      () => Body.applyForce(this.kirby.sprite.body, this.kirby.sprite.body.position, Vector.create(-0.01, -0.007))
+      () => Body.applyForce(this.kirby.sprite.body, this.kirby.sprite.body.position, Vector.create(-0.005, -0.01))
     )
 
     this.registerInputCombination(
@@ -165,8 +167,9 @@ export default class Kirby extends Entity {
     let kirbySprite = new class extends Sprite {
       createBody(animation) {
         let body = super.createBody(animation);
+        //caculate all the forces between Urby and the other entities
         body.plugin.attractors = [
-          function (bodyA, bodyB) {
+          function(bodyA, bodyB) {
             if (!bodyB.isParticle) {
               var vw = windowWidth / 100;
               var vh = windowHeight / 100;
@@ -191,7 +194,7 @@ export default class Kirby extends Entity {
       mass: 0.5,
       position: {
         x: 1200,
-        y: 400
+        y: -100
       },
       restitution: 0.3
     });

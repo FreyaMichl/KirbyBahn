@@ -1,5 +1,6 @@
 import environment from "./environment.js";
 
+//Sprite is for entities with animations
 export default class Sprite {
 
   constructor(animations, options) {
@@ -27,7 +28,7 @@ export default class Sprite {
               wrap: {
                 min: {
                   x: 0,
-                  y: 0
+                  y: -1000
                 },
                 max: {
                   x: environment.canvas.width,
@@ -169,6 +170,7 @@ export default class Sprite {
   }
 }
 
+//SimpleSprite is for easy enities without animations
 export class SimpleSprite {
   constructor(texture) {
     if (!texture) return;
@@ -189,8 +191,7 @@ export class SimpleSprite {
     }
   }
 
-  afterTick() {
-  }
+  afterTick() {}
 
   createBody() {
     throw "Not implemented SimpleSprite#createBody"

@@ -18,7 +18,8 @@ class PlanetSprite extends SimpleSprite {
       this.size, {
         isStatic: true,
         mass: 15,
-        restitution: 0.7,
+        restitution: 0,
+        friction: 1
       },
       64);
     return body;
@@ -43,8 +44,18 @@ export default class Planet extends Entity {
     return new PlanetSprite(this.texture, this.x, this.y, this.size);
   }
 
+  preload() {
+    this.happySound = loadSound("assets/audio/happy.mp3")
+    this.happySound.playMode("sustain");
+  }
 
   afterTick() {
-
+    if (!environment.scene.kirby?.sprite?.body) {
+      return
+    }
+    if (Matter.SAT.collides(environment.scene.kirby.sprite.body, this.sprite.body).collided && !this.collided) {
+      this.happySound.play();
+      this.collided = true;
+    }
   }
 }
