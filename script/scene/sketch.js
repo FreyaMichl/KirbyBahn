@@ -11,10 +11,10 @@ const Engine = Matter.Engine,
   Mouse = Matter.Mouse,
   Common = Matter.Common,
   Bodies = Matter.Bodies;
-  MouseConstraint = Matter.MouseConstraint;
-  Constraint = Matter.Constraint;
-  Composites = Matter.Composites;
-  Composite = Matter.Composite;
+MouseConstraint = Matter.MouseConstraint;
+Constraint = Matter.Constraint;
+Composites = Matter.Composites;
+Composite = Matter.Composite;
 
 const drawVertices = Helpers.drawVertices;
 
@@ -55,7 +55,7 @@ function setup() {
           }
         },
         attractors: [
-          function(bodyA, bodyB) {
+          function (bodyA, bodyB) {
             if (bodyB.isParticle != true) {
               var vw = windowWidth / 100;
               var vh = windowHeight / 100;
@@ -79,12 +79,12 @@ function setup() {
     });
 
   let planets = [Bodies.circle(
-      windowWidth / 2,
-      400,
-      200, {
-        mass: 3,
-        restitution: 0.7,
-      }),
+    windowWidth / 2,
+    400,
+    200, {
+      mass: 3,
+      restitution: 0.7,
+    }),
     Bodies.circle(
       windowWidth / 2,
       500,
@@ -103,7 +103,7 @@ function setup() {
   //add bridge
   const group = Body.nextGroup(true);
   //both x, both y, columns, rows, columnGap, rowGap, callback funktion
-  const rects = Composites.stack(200, 100, 10, 1, 10, 10, function(x, y){
+  const rects = Composites.stack(200, 100, 10, 1, 10, 10, function (x, y) {
     // x (is filled at composite.add), y (""), length, width,
     return Bodies.rectangle(x, y, 100, 50 /*,{ collisionFilter:{ group : group }}*/);
   });
@@ -124,7 +124,7 @@ function setup() {
   //right point of bridge
   Composite.add(rects, Constraint.create({
     pointA: {x: 1000, y: 300},
-    bodyB: rects.bodies[rects.bodies.length-1],
+    bodyB: rects.bodies[rects.bodies.length - 1],
     //constrain im rect
     pointB: {x: +50, y: 0},
     stiffness: 0,
@@ -133,7 +133,7 @@ function setup() {
 
   // run the engine
   Engine.run(engine);
-  Events.on(engine, "afterTick", function() {
+  Events.on(engine, "afterTick", function () {
     if (jumping) {
       let finalForce = Vector.create(0, 0);
 
@@ -202,12 +202,12 @@ function drawBodies(bodies) {
 
 function drawConstraint(constraint) {
   const offsetA = constraint.pointA;
-  let posA = {x:0, y:0};
+  let posA = {x: 0, y: 0};
   if (constraint.bodyA) {
     posA = constraint.bodyA.position;
   }
   const offsetB = constraint.pointB;
-  let posB = {x:0, y:0};
+  let posB = {x: 0, y: 0};
   if (constraint.bodyB) {
     posB = constraint.bodyB.position;
   }

@@ -1,4 +1,4 @@
-const Helpers = (function() {
+const Helpers = (function () {
 
   function drawVertices(vertices) {
     beginShape();
@@ -98,7 +98,6 @@ const Helpers = (function() {
     );
     return body;
   }
-
 
 
   return {

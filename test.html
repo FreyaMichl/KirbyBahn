@@ -1,62 +1,65 @@
 <html>
-    <head>
-        <meta charset="UTF-8">
-        <script language="javascript" type="text/javascript" src="./libraries/matter.js"></script>
-        <script language="javascript" type="text/javascript" src="./libraries/matter-wrap.js"></script>
-        <script language="javascript" type="text/javascript" src="./libraries/matter-attractors.js"></script>
-        <script language="javascript" type="text/javascript" src="./libraries/helpers.js"></script>
-        <script language="javascript" type="text/javascript" src="script_old/Util.js"></script>
+<head>
+    <meta charset="UTF-8">
+    <script language="javascript" type="text/javascript" src="./libraries/matter.js"></script>
+    <script language="javascript" type="text/javascript" src="./libraries/matter-wrap.js"></script>
+    <script language="javascript" type="text/javascript" src="./libraries/matter-attractors.js"></script>
+    <script language="javascript" type="text/javascript" src="./libraries/helpers.js"></script>
+    <script language="javascript" type="text/javascript" src="script_old/Util.js"></script>
 
-        <script language="javascript" type="text/javascript" src="./libraries/p5.js"></script>
-        <style> body {padding: 0; margin: 0;} </style>
-    </head>
-    <body>
-        <main>
-        </main>
-    </body>
-    <script>
-        let sprite;
+    <script language="javascript" type="text/javascript" src="./libraries/p5.js"></script>
+    <style> body {
+        padding: 0;
+        margin: 0;
+    } </style>
+</head>
+<body>
+<main>
+</main>
+</body>
+<script>
+  let sprite;
 
-        class Car {
-            constructor(brand) {
-                this.carname = brand;
-            }
+  class Car {
+    constructor(brand) {
+      this.carname = brand;
+    }
 
-            present(){
-                console.log(this.carname)
-            }
-        }
+    present() {
+      console.log(this.carname)
+    }
+  }
 
-        class Model extends Car{
-            constructor() {
-                super("Mercedes");
-                this.present();
-            }
-        }
+  class Model extends Car {
+    constructor() {
+      super("Mercedes");
+      this.present();
+    }
+  }
 
-        new Model();
+  new Model();
 
-        function preload() {
-            this.sprite = loadJSON('assets/sprites/kirby.json');
-            this.spriteTexture = loadImage('assets/textures/Unbenannt.png')
-        }
+  function preload() {
+    this.sprite = loadJSON('assets/sprites/kirby.json');
+    this.spriteTexture = loadImage('assets/textures/Unbenannt.png')
+  }
 
-        function setup() {
-            createCanvas(windowWidth, windowHeight, WEBGL);
-        }
+  function setup() {
+    createCanvas(windowWidth, windowHeight, WEBGL);
+  }
 
-        function draw() {
-            beginShape();
-            texture(this.spriteTexture)
-            textureMode(NORMAL)
-            Object.values(this.sprite.idle.frames[0].vertices).forEach(element => {
-                if(element.x && element.y){
-                    vertex(element.x, element.y, element.u, element.v)
-                }
-            })
-            endShape(CLOSE);
-            throw 'Test123'
+  function draw() {
+    beginShape();
+    texture(this.spriteTexture)
+    textureMode(NORMAL)
+    Object.values(this.sprite.idle.frames[0].vertices).forEach(element => {
+      if (element.x && element.y) {
+        vertex(element.x, element.y, element.u, element.v)
+      }
+    })
+    endShape(CLOSE);
+    throw 'Test123'
 
-        }
-    </script>
+  }
+</script>
 </html>

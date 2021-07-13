@@ -1,7 +1,7 @@
 export default class Entity {
 
   draw() {
-    this.ensureSpriteExists() ;
+    this.ensureSpriteExists();
     this.sprite.draw()
   }
 
@@ -11,7 +11,7 @@ export default class Entity {
     }
   }
 
-  preload(){
+  preload() {
   }
 
   afterTick() {
@@ -24,7 +24,6 @@ export default class Entity {
   createSprite() {
     throw "not implemented Entity#createSprite"
   }
-
 
 
 }

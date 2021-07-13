@@ -27,11 +27,11 @@ export default class Interior extends Entity {
 
 
   afterTick() {
-     super.afterTick();
-     if(!this.sprite || !this.sprite.body)return
-    if(environment.scene.kirby.sprite && environment.scene.kirby.sprite.body && environment.scene.kirby.sprite.body.position.y > 4426){
+    super.afterTick();
+    if (!this.sprite || !this.sprite.body) return
+    if (environment.scene.kirby.sprite && environment.scene.kirby.sprite.body && environment.scene.kirby.sprite.body.position.y > 4426) {
       this.sprite.body.collisionFilter.category = 0
-    }else{
+    } else {
       this.sprite.body.collisionFilter.category = 1
     }
   }
@@ -41,14 +41,14 @@ export default class Interior extends Entity {
 
     super.draw();
     if (this.sprite.body) {
-          let width = this.sprite.body.bounds.max.x - this.sprite.body.bounds.min.x+100;
-          let height = this.sprite.body.bounds.max.y - this.sprite.body.bounds.min.y + 700;
+      let width = this.sprite.body.bounds.max.x - this.sprite.body.bounds.min.x + 100;
+      let height = this.sprite.body.bounds.max.y - this.sprite.body.bounds.min.y + 700;
       image(
-          this.actualOutline,
-          this.sprite.body.position.x - width / 2 + 25,
-          this.sprite.body.position.y - height / 2 + 202,
-          width,
-          height)
+        this.actualOutline,
+        this.sprite.body.position.x - width / 2 + 25,
+        this.sprite.body.position.y - height / 2 + 202,
+        width,
+        height)
     }
   }
 

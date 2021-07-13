@@ -102,17 +102,13 @@ import {
 // }
 
 
-
-
-
-
-
 class BridgeSprite extends SimpleSprite {
   constructor(texture, x, y) {
     super(texture)
     this.x = x
     this.y = y
   }
+
   createBody() {
     let body = Bodies.rectangle(
       this.x,
@@ -125,6 +121,7 @@ class BridgeSprite extends SimpleSprite {
       });
     return body;
   }
+
   draw() {
     super.draw();
   }

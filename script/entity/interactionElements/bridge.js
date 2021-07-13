@@ -1,6 +1,6 @@
 import Entity from "../../entity.js";
 import {
-    SimpleSprite
+  SimpleSprite
 } from "../../sprite.js";
 
 // // add bridge
@@ -86,70 +86,70 @@ import {
 
 
 class BridgeSprite extends SimpleSprite {
-    constructor(texture, x, y, afterInit) {
-        super(texture)
-        this.x = x
-        this.y = y
-        this.afterInit = afterInit;
-    }
+  constructor(texture, x, y, afterInit) {
+    super(texture)
+    this.x = x
+    this.y = y
+    this.afterInit = afterInit;
+  }
 
-    createBody() {
-        let body = Bodies.rectangle(
-            this.x,
-            this.y,
-            21,
-            11, {
-                mass: 0.05,
-                restitution: 0.3,
-            });
-        // body.plugin.attractors = [
-        //     function (bodyA, bodyB) {
-        //         if (!bodyB.isParticle) {
-        //             var vw = windowWidth / 100;
-        //             var vh = windowHeight / 100;
-        //             // use Newton's law of gravitation
-        //             var bToA = Matter.Vector.sub(bodyB.position, bodyA.position),
-        //                 distanceSq = Matter.Vector.magnitudeSquared(bToA) || 0.001;
-        //             distanceSq /= 600;
-        //             var normal = Matter.Vector.normalise(bToA),
-        //                 magnitude = -MatterAttractors.Attractors.gravityConstant * (bodyA.mass * bodyB.mass / distanceSq),
-        //                 force = Matter.Vector.mult(normal, magnitude);
-        //             force.x /= vw / 16;
-        //             force.y /= vw / 16;
-        //             // to apply forces to both bodies
-        //             Body.applyForce(bodyA, bodyA.position, Matter.Vector.neg(force));
-        //             Body.applyForce(bodyB, bodyB.position, force);
-        //         }
-        //     }
-        // ]
-        return body;
-    }
+  createBody() {
+    let body = Bodies.rectangle(
+      this.x,
+      this.y,
+      21,
+      11, {
+        mass: 0.05,
+        restitution: 0.3,
+      });
+    // body.plugin.attractors = [
+    //     function (bodyA, bodyB) {
+    //         if (!bodyB.isParticle) {
+    //             var vw = windowWidth / 100;
+    //             var vh = windowHeight / 100;
+    //             // use Newton's law of gravitation
+    //             var bToA = Matter.Vector.sub(bodyB.position, bodyA.position),
+    //                 distanceSq = Matter.Vector.magnitudeSquared(bToA) || 0.001;
+    //             distanceSq /= 600;
+    //             var normal = Matter.Vector.normalise(bToA),
+    //                 magnitude = -MatterAttractors.Attractors.gravityConstant * (bodyA.mass * bodyB.mass / distanceSq),
+    //                 force = Matter.Vector.mult(normal, magnitude);
+    //             force.x /= vw / 16;
+    //             force.y /= vw / 16;
+    //             // to apply forces to both bodies
+    //             Body.applyForce(bodyA, bodyA.position, Matter.Vector.neg(force));
+    //             Body.applyForce(bodyB, bodyB.position, force);
+    //         }
+    //     }
+    // ]
+    return body;
+  }
 
-    draw() {
-        super.draw();
-        if (!this.body) return
-        if (this.initialized) return
-        this.initialized = true
-        this.afterInit();
-    }
+  draw() {
+    super.draw();
+    if (!this.body) return
+    if (this.initialized) return
+    this.initialized = true
+    this.afterInit();
+  }
 }
 
 export default class Bridge extends Entity {
 
-    constructor(texture, x, y, afterInit) {
-        super();
-        this.texture = texture;
-        this.x = x;
-        this.y = y;
-        this.afterInit = afterInit;
-    }
+  constructor(texture, x, y, afterInit) {
+    super();
+    this.texture = texture;
+    this.x = x;
+    this.y = y;
+    this.afterInit = afterInit;
+  }
 
-    createSprite() {
-        return new BridgeSprite(this.texture, this.x, this.y, this.afterInit);
-    }
+  createSprite() {
+    return new BridgeSprite(this.texture, this.x, this.y, this.afterInit);
+  }
 
 
-    afterTick() {
+  afterTick() {
 
-    }
+  }
 }

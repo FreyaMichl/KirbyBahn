@@ -10,6 +10,7 @@ class PlanetSprite extends SimpleSprite {
     this.y = y
     this.size = size
   }
+
   createBody() {
     let body = Bodies.circle(
       this.x,
@@ -22,6 +23,7 @@ class PlanetSprite extends SimpleSprite {
       64);
     return body;
   }
+
   draw() {
     super.draw();
   }
